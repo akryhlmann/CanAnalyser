@@ -28,7 +28,10 @@ class BusConfig:
     interface: str = "kvaser"  # "kvaser", "virtual", or any python-can interface
     channel: int | str = 0
     bitrate: int = 250_000
-    listen_only: bool = True
+    # Normal mode by default: on a bench with a single device under test the
+    # interface must ACK frames, otherwise the device only sees ACK errors and
+    # nothing valid is ever received. It still transmits nothing on its own.
+    listen_only: bool = False
 
     def open(self) -> can.BusABC:
         kwargs: dict = {"interface": self.interface, "channel": self.channel}
@@ -77,6 +80,7 @@ class Monitor:
         self.decoder: Decoder = decoder or RawDecoder()
         self.frames: queue.Queue[DecodedFrame] = queue.Queue(max_queue)
         self.dropped = 0
+        self.error_frames = 0
         self.error: str | None = None
         self._listen_only = True
         self._tx_echo: queue.SimpleQueue[can.Message] = queue.SimpleQueue()
@@ -112,6 +116,7 @@ class Monitor:
         self._source = source
         self.error = None
         self.dropped = 0
+        self.error_frames = 0
         self.decoder.reset()
         self._stop.clear()
         self._thread = threading.Thread(target=self._run, name="can-reader", daemon=True)
@@ -127,6 +132,16 @@ class Monitor:
             self._source = None
         self._bus = None
         self.stop_logging()
+
+    def bus_statistics(self):
+        """Hardware bus statistics (Kvaser only), or None."""
+        get_stats = getattr(self._bus, "get_stats", None)
+        if get_stats is None:
+            return None
+        try:
+            return get_stats()
+        except Exception:  # noqa: BLE001 - not supported by this device/driver
+            return None
 
     # -- logging -------------------------------------------------------------
 
@@ -177,6 +192,8 @@ class Monitor:
             self.error = str(exc)
 
     def _process(self, msg: can.Message, tx: bool = False) -> None:
+        if msg.is_error_frame:
+            self.error_frames += 1
         with self._log_lock:
             if self._logger is not None:
                 self._logger(msg)
