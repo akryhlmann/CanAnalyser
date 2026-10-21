@@ -49,11 +49,19 @@ cananalyser --dbc engine.dbc --dbc extra.dbc  # J1939 with DBC files
 cananalyser --eds drive.eds:5                 # CANopen, EDS for node 5
 ```
 
-Pick protocol, interface (Kvaser channel) and bitrate, then **Connect**.
-The interface starts in **Listen only** (silent) mode, so it never transmits.
-Turn listen-only off to send NMT commands. Also turn it off when the device
-under test is the only other node on the bus, because a silent interface does
-not ACK frames.
+Pick protocol, interface (Kvaser channels are listed by device name and serial
+number), and bitrate, then **Connect**.
+
+The interface connects in **normal mode**. It ACKs frames but transmits
+nothing on its own; it only sends when you press an NMT button. This is needed
+on a bench where the device under test is the only other node.
+**Listen only** (silent mode) is for networks that already have other nodes
+to ACK frames, such as a vehicle. With a single device it receives nothing.
+
+The status bar shows hardware bus load, error frames and overruns. If nothing
+arrives within 3 seconds it suggests the likely cause: only error frames
+point to a wrong bitrate, and a silent bus points to listen-only, the channel
+or the wiring.
 
 ### Without hardware
 

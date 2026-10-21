@@ -54,7 +54,17 @@ def kvaser_channels() -> list[tuple[str, int]]:
         configs = can.detect_available_configs(interfaces=["kvaser"])
     except Exception:  # noqa: BLE001 - missing canlib32.dll etc.
         return []
-    return [(f"Kvaser ch {c['channel']}", int(c["channel"])) for c in configs]
+    channels = []
+    for c in configs:
+        name = c.get("device_name") or "Kvaser"
+        label = f"{c['channel']}: {name}"
+        if c.get("serial"):
+            label += f" S/N {c['serial']}"
+        if c.get("dongle_channel"):
+            label += f" ch {c['dongle_channel']}"
+        channels.append((label, int(c["channel"])))
+    # Physical devices first; CANlib's virtual channels look connected but carry no traffic.
+    return sorted(channels, key=lambda ch: "virtual" in ch[0].lower())
 
 
 def frame_bits(msg: can.Message) -> int:
@@ -89,6 +99,9 @@ class MainWindow(QMainWindow):
         self.simulator = None
         self.total_frames = 0
         self._load_window: deque[tuple[float, int]] = deque()
+        self._connected_at: float | None = None
+        self._hw_stats = None
+        self._hw_stats_at = 0.0
         self._loaded_files: list[str] = []
 
         self.trace = TraceModel()
@@ -135,11 +148,10 @@ class MainWindow(QMainWindow):
         bar.addWidget(self.bitrate)
 
         self.listen_only = QCheckBox("Listen only")
-        self.listen_only.setChecked(True)
         self.listen_only.setToolTip(
-            "Silent mode: never transmits, not even ACKs. Disable to send NMT commands.\n"
-            "Note: if the device under test is the only other node, it needs an ACK, "
-            "so turn listen-only off."
+            "Silent mode: the interface never transmits, not even ACKs.\n"
+            "Only use it on a network that has other nodes to ACK frames (e.g. a vehicle).\n"
+            "With a single device under test nothing will be received in this mode."
         )
         self.listen_only.toggled.connect(self._update_controls)
         bar.addWidget(self.listen_only)
@@ -249,9 +261,12 @@ class MainWindow(QMainWindow):
             self._disconnect()
             QMessageBox.critical(self, "Connect failed", f"Could not open {self.source.currentText()}:\n{exc}")
             return
+        self._connected_at = time.monotonic()
         self._update_controls()
 
     def _disconnect(self) -> None:
+        self._connected_at = None
+        self._hw_stats = None
         self.monitor.stop()
         if self.simulator is not None:
             self.simulator.stop()
@@ -367,11 +382,25 @@ class MainWindow(QMainWindow):
             self._load_window.popleft()
         bits = sum(b for _, b in self._load_window)
         load = 100.0 * bits / self.bitrate.currentData() if self.monitor.running else 0.0
+        error_frames = self.monitor.error_frames
+        if self.monitor.running and now - self._hw_stats_at >= 1.0:
+            self._hw_stats_at = now
+            self._hw_stats = self.monitor.bus_statistics()
+        if self._hw_stats is not None:
+            load = self._hw_stats.bus_load / 100.0
+            error_frames = max(error_frames, self._hw_stats.err_frame)
         parts = [
             "Connected" if self.monitor.running else "Disconnected",
             f"frames {self.total_frames}",
-            f"bus load ~{load:.0f}%",
+            f"bus load {load:.0f}%",
         ]
+        if error_frames:
+            parts.append(f"error frames {error_frames}")
+        if self._hw_stats is not None and self._hw_stats.overruns:
+            parts.append(f"overruns {self._hw_stats.overruns}")
+        hint = self._no_traffic_hint(now, error_frames)
+        if hint:
+            parts.append(hint)
         if self.monitor.logging:
             parts.append("● recording")
         if self.monitor.dropped:
@@ -379,6 +408,21 @@ class MainWindow(QMainWindow):
         if self._loaded_files:
             parts.append("files: " + ", ".join(self._loaded_files))
         self.statusBar().showMessage("   |   ".join(parts))
+
+    def _no_traffic_hint(self, now: float, error_frames: int) -> str:
+        if self._connected_at is None or now - self._connected_at < 3.0:
+            return ""
+        if self.total_frames > error_frames:
+            return ""
+        if "virtual" in self.source.currentText().lower():
+            return "⚠ this is a Kvaser VIRTUAL channel (no hardware); CANlib does not see the USBcan, check drivers"
+        if error_frames:
+            return "⚠ only error frames: check the bitrate"
+        if self.listen_only.isChecked():
+            return "⚠ no frames: listen-only gets nothing if no other node ACKs; turn it off"
+        # A wrong bitrate produces error frames; a completely silent line usually
+        # means the device is wired to a different channel (USBcan 2xHS has two).
+        return "⚠ no frames or errors on this channel: try the other Kvaser channel, then check wiring/termination"
 
     def closeEvent(self, event) -> None:  # noqa: N802
         self._disconnect()
