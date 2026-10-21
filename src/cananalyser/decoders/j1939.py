@@ -170,6 +170,9 @@ class J1939Decoder:
         self._spn_names: dict[int, str] = {}
         self._sessions: dict[tuple[int, int], _TpSession] = {}
         self._nodes: dict[int, _Node] = {}
+        # (PGN, SA) pairs sent bit-inverted by a redundant channel; their data
+        # is inverted back before decoding. Replaced as a whole (thread-safe).
+        self.inverted: frozenset[tuple[int, int]] = frozenset()
         if dbc_path:
             self.load_dbc(dbc_path)
 
@@ -214,6 +217,9 @@ class J1939Decoder:
             frame.summary = self._handle_tp_cm(jid, data, ts)
         elif jid.pgn == PGN_TP_DT:
             frame.summary = self._handle_tp_dt(jid, data, ts, frame)
+        elif (jid.pgn, jid.sa) in self.inverted:
+            self._decode_pg(jid.pgn, jid.sa, jid.da, invert(data), frame)
+            frame.summary = f"{frame.summary} (inverted)  {_addr(jid)}"
         else:
             self._decode_pg(jid.pgn, jid.sa, jid.da, data, frame)
             frame.summary = f"{frame.summary}  {_addr(jid)}"
@@ -347,6 +353,10 @@ class J1939Decoder:
                 last_seen=ts,
             )
         )
+
+
+def invert(data: bytes) -> bytes:
+    return bytes(b ^ 0xFF for b in data)
 
 
 def _addr(jid: J1939Id) -> str:

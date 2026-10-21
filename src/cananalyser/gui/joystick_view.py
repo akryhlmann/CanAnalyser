@@ -5,6 +5,7 @@ from __future__ import annotations
 from PySide6.QtCore import QPointF, QRectF, QSize, Qt
 from PySide6.QtGui import QColor, QFont, QPainter, QPainterPath, QPen
 from PySide6.QtWidgets import (
+    QCheckBox,
     QComboBox,
     QGridLayout,
     QGroupBox,
@@ -32,6 +33,7 @@ GOOD = QColor(30, 160, 80)
 BAD = QColor(210, 40, 40)
 MUTED = QColor(150, 150, 150)
 ACCENT = QColor(40, 110, 220)
+OVERLAY = QColor(240, 140, 0)
 
 
 def status_color(status: str) -> QColor:
@@ -52,6 +54,7 @@ class XYPlot(QWidget):
     def __init__(self):
         super().__init__()
         self.joystick: Joystick | None = None
+        self.overlay: Joystick | None = None  # redundant channel, drawn as a ring
         self.setMinimumSize(260, 260)
         self.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
 
@@ -104,6 +107,17 @@ class XYPlot(QWidget):
         p.setPen(QPen(BAD if not ok else fg))
         p.setFont(QFont(p.font().family(), 10, QFont.Bold))
         p.drawText(QRectF(rect.left() + 6, rect.top() + 4, side, 18), Qt.AlignLeft, f"X {axis_text(x)}   Y {axis_text(y)}")
+        if self.overlay is not None:
+            ox, oy = self.overlay.main_axes
+            if ox.value is not None and oy.value is not None:
+                p.setPen(QPen(OVERLAY, 3))
+                p.setBrush(Qt.NoBrush)
+                p.drawEllipse(to_px(ox.value, oy.value), 14, 14)
+            p.setPen(OVERLAY)
+            p.drawText(
+                QRectF(rect.left() + 6, rect.top() + 22, side, 18), Qt.AlignLeft,
+                f"○ {self.overlay.label}:  X {axis_text(ox)}   Y {axis_text(oy)}",
+            )
 
 
 class BarGraph(QWidget):
@@ -198,6 +212,10 @@ class JoystickView(QWidget):
         top = QHBoxLayout()
         top.addWidget(QLabel("Joystick"))
         top.addWidget(self.selector, 1)
+        self.show_overlay = QCheckBox("Overlay redundant channel")
+        self.show_overlay.setChecked(True)
+        self.show_overlay.setToolTip("Draw the paired redundant joystick (Redundancy tab) as an orange ring")
+        top.addWidget(self.show_overlay)
         top.addWidget(self.age)
 
         self.xy = XYPlot()
@@ -240,7 +258,8 @@ class JoystickView(QWidget):
         outer.setContentsMargins(0, 0, 0, 0)
         outer.addWidget(self.stack)
 
-    def refresh(self, profile: JS1HProfile, now: float) -> None:
+    def refresh(self, profile: JS1HProfile, now: float, partners: dict | None = None) -> None:
+        """Show the selected joystick; ``partners`` maps a joystick key to its redundant twin."""
         keys = list(profile.joysticks)
         current = self.selector.currentData()
         if [self.selector.itemData(i) for i in range(self.selector.count())] != keys:
@@ -257,6 +276,9 @@ class JoystickView(QWidget):
             return
         self.age.setText(f"updated {max(0.0, now - js.last_update) * 1000:.0f} ms ago")
         self.xy.joystick = js
+        partner = (partners or {}).get(js.key)
+        self.show_overlay.setVisible(partner is not None)
+        self.xy.overlay = profile.joysticks.get(partner) if partner and self.show_overlay.isChecked() else None
         self.xy.update()
         self._update_grips(js)
         self._update_status(js)

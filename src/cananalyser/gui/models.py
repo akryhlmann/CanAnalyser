@@ -349,12 +349,15 @@ class FaultModel(_Table):
         return self._flat
 
     def update(self, frames: list[DecodedFrame]) -> None:
+        self.apply([fs for frame in frames for fs in frame.faults])
+
+    def apply(self, fault_sets: list[FaultSet]) -> None:
+        """Replace the active faults of each set's source."""
         changed = False
-        for frame in frames:
-            for fs in frame.faults:
-                if self._sets.get(fs.source) != fs:
-                    self._sets[fs.source] = fs
-                    changed = True
+        for fs in fault_sets:
+            if self._sets.get(fs.source) != fs:
+                self._sets[fs.source] = fs
+                changed = True
         if changed:
             self.beginResetModel()
             self._flat = [(s, f) for s, fs in sorted(self._sets.items()) for f in fs.faults]

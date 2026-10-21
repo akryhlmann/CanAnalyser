@@ -81,6 +81,37 @@ JS1-H EDS loaded or the mapping learned from the bus.
 The selector lists each joystick seen: J1939 source address with message
 set 1 (BJM1/EJM1) or 3 (BJM3/EJM3), or CANopen node ID.
 
+### Redundancy check (JS1-H SBW)
+
+For joysticks that send BJM1 from two controllers, the **Redundancy** tab
+compares the two channels: a primary, and a secondary that sends every data
+byte bit-inverted. The defaults are SA 51 (0x33) for the primary and 52
+(0x34) for the secondary; both can be changed in the tab. The secondary is
+inverted back before decoding, so both channels appear as normal BJM1
+signals.
+
+Each primary/secondary pair from the same cycle is checked:
+
+| Check | Rule |
+|---|---|
+| X / Y position | Within the position tolerance (default 2 %). Direction counts, and both channels reporting a sensor error counts as agreement. |
+| Status bits, buttons 1–12 | Equal |
+| Inversion | The secondary must be closer to the inverse of the primary than to a copy of it |
+| Pairing gap | Time from primary to secondary (min/avg/max). Frames more than the max gap apart are counted as unpaired. |
+| Channels | Period, frame count and timeout (default 100 ms), including a channel that never transmits |
+
+A disagreement becomes a fault only after it lasts for "Fault after"
+consecutive pairs (default 3). That way a button edge or neutral threshold
+seen one cycle apart by the two controllers is counted but not raised.
+Active faults also appear in the Faults tab. The position differences and
+the pairing gap are available in the Trend tab. On the Joystick tab, the
+partner channel is drawn as an orange ring.
+
+**This is diagnostic monitoring only, not a safety function.**
+
+The *Simulator (JS1-H SBW redundant, J1939)* injects, every 30 s, a +6 % X
+offset, a 2 s secondary dropout and a stuck button 1.
+
 ### Trend plot
 
 The **Trend** tab plots any numeric signal over time, in windows from 10 s up

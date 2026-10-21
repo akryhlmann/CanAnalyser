@@ -249,6 +249,41 @@ class JS1HJ1939Simulator(_Simulator):
         return pack_bits(self._axis_fields(grip_x, 0) + self._axis_fields(grip_y, 16) + [(52, 2, 3), (54, 2, 3)])
 
 
+class JS1HSBWSimulator(JS1HJ1939Simulator):
+    """Redundant JS1-H SBW: BJM1 from a primary and a bit-inverted secondary.
+
+    The secondary measures the same lever with its own small error. In each
+    30 s cycle it injects: a +6 % X offset (10-13 s), silence (18-20 s) and
+    a stuck button 1 (25-26 s).
+    """
+
+    PRIMARY, SECONDARY = 51, 52
+    CYCLE = 30.0
+
+    def _run(self) -> None:
+        for sa in (self.PRIMARY, self.SECONDARY):
+            name = (1 << 63) | (25 << 21) | sa
+            self._send(j1939_id(6, 60928, sa), name.to_bytes(8, "little"), True)
+        t0 = time.monotonic()
+        while not self._stop.wait(0.02):
+            t = time.monotonic() - t0
+            phase = t % self.CYCLE
+            axes = _js1h_motion(t, 0.0)
+            pressed = int(t * 2) % 8 + 1
+            buttons = [(1 if b == pressed else 0) for b in range(1, 11)] + [3, 3]
+            self._send(j1939_id(3, 0xFDD6, self.PRIMARY), self._bjm(axes["X"], axes["Y"], buttons), True)
+            if 18.0 <= phase < 20.0:
+                continue  # secondary silent
+            x2 = axes["X"] + 0.3 * math.sin(t * 7) + (6.0 if 10.0 <= phase < 13.0 else 0.0)
+            y2 = axes["Y"] - 0.3 * math.cos(t * 5)
+            buttons2 = list(buttons)
+            if 25.0 <= phase < 26.0:
+                buttons2[0] = 1  # button 1 stuck pressed on the secondary
+            self._stop.wait(0.001)
+            data = self._bjm(max(-100.0, min(100.0, x2)), max(-100.0, min(100.0, y2)), buttons2)
+            self._send(j1939_id(3, 0xFDD6, self.SECONDARY), bytes(b ^ 0xFF for b in data), True)
+
+
 class JS1HCANopenSimulator(CANopenSimulator):
     """Danfoss JS1-H (CAN variant) at node 0x10: heartbeat, TPDO1-3, EMCY."""
 
@@ -316,4 +351,5 @@ SIMULATORS = {
     ("canopen", "generic"): CANopenSimulator,
     ("j1939", "js1h"): JS1HJ1939Simulator,
     ("canopen", "js1h"): JS1HCANopenSimulator,
+    ("j1939", "js1h-sbw"): JS1HSBWSimulator,
 }

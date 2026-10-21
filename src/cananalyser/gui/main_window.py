@@ -41,9 +41,11 @@ from cananalyser.decoders.canopen import (
 )
 from cananalyser.gui.joystick_view import JoystickView
 from cananalyser.gui.models import FaultModel, NodeModel, OverviewModel, SignalModel, TraceFilter, TraceModel
+from cananalyser.gui.redundancy_view import RedundancyView
 from cananalyser.gui.trend_view import TrendView
 from cananalyser.model import DecodedFrame
 from cananalyser.profiles.js1h import JS1HProfile
+from cananalyser.redundancy import RedundancyChecker
 from cananalyser.sim import SIMULATORS, JS1HCANopenSimulator
 from cananalyser.trend import TrendStore
 
@@ -131,6 +133,9 @@ class MainWindow(QMainWindow):
         self.profile = JS1HProfile()
         self.trend_store = TrendStore()
         self._bus_time = 0.0
+        self._bus_time_mono = time.monotonic()  # monotonic clock when _bus_time was taken
+        self.redundancy = RedundancyChecker()
+        self.j1939.inverted = self.redundancy.inverted_sources
 
         self._build_toolbar()
         self._build_tabs()
@@ -158,6 +163,7 @@ class MainWindow(QMainWindow):
             self.source.addItem(label, ("kvaser", channel))
         self.source.addItem("Simulator (engine ECU / I/O node)", ("sim", "generic"))
         self.source.addItem("Simulator (JS1-H joystick)", ("sim", "js1h"))
+        self.source.addItem("Simulator (JS1-H SBW redundant, J1939)", ("sim", "js1h-sbw"))
         bar.addWidget(QLabel("  Interface "))
         bar.addWidget(self.source)
 
@@ -239,6 +245,9 @@ class MainWindow(QMainWindow):
 
         self.joystick_view = JoystickView()
         tabs.addTab(self.joystick_view, "Joystick")
+        self.redundancy_view = RedundancyView(self.redundancy)
+        self.redundancy_view.config_changed.connect(self._set_redundancy_config)
+        tabs.addTab(self.redundancy_view, "Redundancy")
         self.trend_view = TrendView(self.trend_store)
         tabs.addTab(self.trend_view, "Trend")
         signal_view.setToolTip("Double-click a signal to plot it in the Trend tab")
@@ -279,9 +288,13 @@ class MainWindow(QMainWindow):
         self.monitor.decoder = self.decoder
         try:
             if kind == "sim":
-                if channel == "js1h":
+                key = (self.protocol.currentText().lower(), channel)
+                if key not in SIMULATORS:
+                    QMessageBox.information(self, "Simulator", f"{self.source.currentText()} is only available for J1939.")
+                    return
+                if channel.startswith("js1h"):
                     self._load_js1h_databases()
-                self.simulator = SIMULATORS[(self.protocol.currentText().lower(), channel)](SIM_CHANNEL)
+                self.simulator = SIMULATORS[key](SIM_CHANNEL)
                 self.monitor.start_bus(BusConfig("virtual", SIM_CHANNEL, listen_only=self.listen_only.isChecked()))
                 self.simulator.start()
             else:
@@ -365,6 +378,7 @@ class MainWindow(QMainWindow):
         for model in (self.trace, self.overview, self.signals, self.nodes, self.faults):
             model.clear()
         self.profile.clear()
+        self.redundancy.reset()
         self.trend_store.clear()
         self.trend_view.clear()
         self.total_frames = 0
@@ -383,6 +397,17 @@ class MainWindow(QMainWindow):
                 return
             self.canopen.load_eds(path, JS1HCANopenSimulator.NODE)
         self._loaded_files.append(path.name)
+
+    def _set_redundancy_config(self, config) -> None:
+        self.redundancy.config = config
+        self.redundancy.reset()
+        self.j1939.inverted = self.redundancy.inverted_sources
+        self.faults.apply([self.redundancy.fault_set()])
+
+    def _redundant_partners(self) -> dict:
+        cfg = self.redundancy.config
+        primary, secondary = ("J1939", cfg.primary_sa, "1"), ("J1939", cfg.secondary_sa, "1")
+        return {primary: secondary, secondary: primary}
 
     def _plot_signal(self, index) -> None:
         key = self.signals.key_at(index.row())
@@ -410,9 +435,15 @@ class MainWindow(QMainWindow):
             self.nodes._refresh_all()  # keep "last seen" ages ticking
         current = self.tabs.currentWidget()
         if current is self.joystick_view:
-            self.joystick_view.refresh(self.profile, self._bus_time)
+            self.joystick_view.refresh(self.profile, self._bus_time, self._redundant_partners())
+        elif current is self.redundancy_view:
+            self.redundancy_view.refresh()
         elif current is self.trend_view:
             self.trend_view.refresh()
+        if self.monitor.running and self.protocol.currentText() == J1939:
+            # Timeouts must also show while nothing arrives at all.
+            self.redundancy.check_timeouts(self._bus_time + time.monotonic() - self._bus_time_mono)
+            self.faults.apply([self.redundancy.fault_set()])
         if self.monitor.error:
             error = self.monitor.error
             self._disconnect()
@@ -432,11 +463,15 @@ class MainWindow(QMainWindow):
         self.nodes.update(frames)
         self.faults.update(frames)
         self.profile.update(frames)
+        self._bus_time = frames[-1].msg.timestamp
+        self._bus_time_mono = time.monotonic()
         new_series = self.trend_store.add(frames)
         new_series += self.trend_store.add_samples(self.profile.take_derived())
+        if self.protocol.currentText() == J1939:
+            self.redundancy.update(frames, self._bus_time)
+            new_series += self.trend_store.add_samples(self.redundancy.take_derived())
         if new_series:
             self.trend_view.add_keys(new_series)
-        self._bus_time = frames[-1].msg.timestamp
         count = self.faults.active_count
         self.tabs.setTabText(self.fault_tab, f"Faults ({count})" if count else "Faults")
 
