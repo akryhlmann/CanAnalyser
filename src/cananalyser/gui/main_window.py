@@ -418,7 +418,9 @@ class MainWindow(QMainWindow):
             return "⚠ only error frames: check the bitrate"
         if self.listen_only.isChecked():
             return "⚠ no frames: listen-only gets nothing if no other node ACKs; turn it off"
-        return "⚠ no frames: check channel, bitrate, wiring and 120 Ω termination"
+        # A wrong bitrate produces error frames; a completely silent line usually
+        # means the device is wired to a different channel (USBcan 2xHS has two).
+        return "⚠ no frames or errors on this channel: try the other Kvaser channel, then check wiring/termination"
 
     def closeEvent(self, event) -> None:  # noqa: N802
         self._disconnect()
