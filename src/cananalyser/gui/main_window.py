@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import sys
 import time
 from collections import deque
 from pathlib import Path
@@ -45,6 +46,18 @@ from cananalyser.sim import SIMULATORS
 J1939 = "J1939"
 CANOPEN = "CANopen"
 SIM_CHANNEL = "cananalyser-sim"
+
+
+def database_dir() -> str:
+    """Folder with the bundled DBC/EDS files: next to the .exe, or in the repo."""
+    if getattr(sys, "frozen", False):
+        base = Path(sys.executable).parent
+    else:
+        base = Path(__file__).resolve().parents[3]
+    folder = base / "databases"
+    return str(folder) if folder.is_dir() else ""
+
+
 LOG_FILTER = "Vector BLF (*.blf);;Vector ASC (*.asc);;candump log (*.log);;PEAK TRC (*.trc);;CSV (*.csv)"
 
 
@@ -302,7 +315,7 @@ class MainWindow(QMainWindow):
 
     def _load_database(self) -> None:
         if self.protocol.currentText() == J1939:
-            path, _ = QFileDialog.getOpenFileName(self, "Load J1939 DBC", "", "DBC files (*.dbc)")
+            path, _ = QFileDialog.getOpenFileName(self, "Load J1939 DBC", database_dir(), "DBC files (*.dbc)")
             if not path:
                 return
             try:
@@ -311,7 +324,7 @@ class MainWindow(QMainWindow):
                 QMessageBox.critical(self, "DBC error", str(exc))
                 return
         else:
-            path, _ = QFileDialog.getOpenFileName(self, "Load EDS/DCF", "", "Device description (*.eds *.dcf)")
+            path, _ = QFileDialog.getOpenFileName(self, "Load EDS/DCF", database_dir(), "Device description (*.eds *.dcf)")
             if not path:
                 return
             node_id, ok = QInputDialog.getInt(self, "Node ID", f"Node ID for {Path(path).name}:", 1, 1, 127)

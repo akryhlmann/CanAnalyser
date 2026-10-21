@@ -72,6 +72,28 @@ The CANopen simulator obeys NMT commands. Its master also remaps TPDO1 at boot,
 differently from the deliberately out-of-date example EDS, which shows the
 learned-mapping feature at work.
 
+## Sharing with colleagues (Windows app, no Python needed)
+
+The app can be packaged as a folder containing `CanAnalyser.exe`, zipped as
+`CanAnalyser-windows.zip`. Colleagues unzip it and double-click the `.exe`.
+Each PC still needs **Kvaser Drivers for Windows** installed. The Kvaser DLL
+is not bundled. The bundled `databases` folder sits next to the `.exe`, and
+the Load DBC/EDS dialogs open there.
+
+There are two ways to get the zip:
+
+- **From GitHub:** every push to `main` runs the *Build Windows app* workflow.
+  Download `CanAnalyser-windows` from the run's **Artifacts** under the
+  Actions tab. Pushing a tag such as `v0.2.0` also attaches the zip to a
+  GitHub Release, which gives colleagues a stable download link.
+- **On your own PC:**
+
+  ```powershell
+  powershell -ExecutionPolicy Bypass -File packaging\build_windows.ps1
+  ```
+
+  This creates `dist\CanAnalyser-windows.zip`.
+
 ## Tests
 
 ```
