@@ -264,6 +264,9 @@ class SignalModel(_Table):
         self._values.clear()
         self.endResetModel()
 
+    def key_at(self, row: int) -> tuple:
+        return self._keys[row]
+
     def data(self, index, role=Qt.DisplayRole):
         sig, _, interval = self._values[self._keys[index.row()]]
         if role == Qt.DisplayRole:

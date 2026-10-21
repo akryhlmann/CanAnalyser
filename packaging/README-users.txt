@@ -11,7 +11,8 @@ Database files (DBC for J1939, EDS for CANopen) are in the "databases" folder.
 Load them with "Load DBC..." / "Load EDS..." in the toolbar. You can add your own
 files to that folder.
 
-Choose "Simulator" as the interface to try the app without hardware.
+Choose "Simulator (JS1-H joystick)" as the interface to try the Joystick and
+Trend tabs without hardware (for CANopen, press NMT Start).
 
 If nothing is received: check the status bar. It warns about a wrong bitrate,
 a Kvaser *virtual* channel, or listen-only mode.

@@ -13,6 +13,7 @@ dependencies = [
     "cantools>=39",
     "canopen>=2.3",
     "PySide6>=6.6",
+    "pyqtgraph>=0.13.7",
 ]
 
 [project.optional-dependencies]
