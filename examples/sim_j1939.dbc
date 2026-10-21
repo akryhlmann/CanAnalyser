@@ -1,0 +1,40 @@
+VERSION ""
+
+
+NS_ :
+
+BS_:
+
+BU_: Engine
+
+
+BO_ 2364540158 EEC1: 8 Engine
+ SG_ EngineTorqueMode : 0|4@1+ (1,0) [0|15] "" Vector__XXX
+ SG_ ActualEnginePercentTorque : 16|8@1+ (1,-125) [-125|125] "%" Vector__XXX
+ SG_ EngineSpeed : 24|16@1+ (0.125,0) [0|8031.875] "rpm" Vector__XXX
+
+BO_ 2566844158 ET1: 8 Engine
+ SG_ EngineCoolantTemp : 0|8@1+ (1,-40) [-40|210] "degC" Vector__XXX
+ SG_ EngineOilTemp1 : 16|16@1+ (0.03125,-273) [-273|1734.96875] "degC" Vector__XXX
+
+BO_ 2566844926 CCVS1: 8 Engine
+ SG_ WheelBasedVehicleSpeed : 8|16@1+ (0.00390625,0) [0|250.996] "km/h" Vector__XXX
+ SG_ ParkingBrakeSwitch : 2|2@1+ (1,0) [0|3] "" Vector__XXX
+
+
+
+BA_DEF_ SG_ "SPN" INT 0 524287;
+BA_DEF_ BO_ "VFrameFormat" ENUM "StandardCAN","ExtendedCAN","reserved","J1939PG";
+BA_DEF_DEF_ "SPN" 0;
+BA_DEF_DEF_ "VFrameFormat" "J1939PG";
+BA_ "VFrameFormat" BO_ 2364540158 3;
+BA_ "VFrameFormat" BO_ 2566844158 3;
+BA_ "VFrameFormat" BO_ 2566844926 3;
+BA_ "SPN" SG_ 2364540158 EngineTorqueMode 899;
+BA_ "SPN" SG_ 2364540158 ActualEnginePercentTorque 513;
+BA_ "SPN" SG_ 2364540158 EngineSpeed 190;
+BA_ "SPN" SG_ 2566844158 EngineCoolantTemp 110;
+BA_ "SPN" SG_ 2566844158 EngineOilTemp1 175;
+BA_ "SPN" SG_ 2566844926 WheelBasedVehicleSpeed 84;
+BA_ "SPN" SG_ 2566844926 ParkingBrakeSwitch 70;
+VAL_ 2566844926 ParkingBrakeSwitch 0 "Not set" 1 "Set" 2 "Error" 3 "Not available" ;
