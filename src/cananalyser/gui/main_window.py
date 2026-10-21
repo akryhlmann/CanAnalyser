@@ -414,6 +414,8 @@ class MainWindow(QMainWindow):
             return ""
         if self.total_frames > error_frames:
             return ""
+        if "virtual" in self.source.currentText().lower():
+            return "⚠ this is a Kvaser VIRTUAL channel (no hardware); CANlib does not see the USBcan, check drivers"
         if error_frames:
             return "⚠ only error frames: check the bitrate"
         if self.listen_only.isChecked():
