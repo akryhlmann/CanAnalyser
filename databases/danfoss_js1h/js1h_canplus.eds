@@ -1,0 +1,1829 @@
+[FileInfo]
+FileName=js1h_canplus.eds
+FileVersion=1
+FileRevision=0
+EDSVersion=4.0
+Description=Reconstructed from Danfoss TI BC171886484518en-001601 (rev 1601). Not an official Danfoss EDS.
+CreatedBy=CanAnalyser tools/make_js1h_databases.py
+
+[DeviceInfo]
+VendorName=Danfoss
+VendorNumber=0x19
+ProductName=JS1-H CAN+ (CANopen)
+ProductNumber=0x1
+RevisionNumber=0x10001
+BaudRate_10=0
+BaudRate_20=0
+BaudRate_50=0
+BaudRate_125=1
+BaudRate_250=1
+BaudRate_500=1
+BaudRate_800=0
+BaudRate_1000=0
+SimpleBootUpMaster=0
+SimpleBootUpSlave=1
+Granularity=0
+DynamicChannelsSupported=0
+GroupMessaging=0
+NrOfRXPDO=0
+NrOfTXPDO=4
+LSS_Supported=1
+
+[DummyUsage]
+Dummy0001=0
+Dummy0002=0
+Dummy0003=0
+Dummy0004=0
+Dummy0005=0
+Dummy0006=0
+Dummy0007=0
+
+[Comments]
+Lines=0
+
+[MandatoryObjects]
+SupportedObjects=3
+1=0x1000
+2=0x1001
+3=0x1018
+
+[OptionalObjects]
+SupportedObjects=21
+1=0x1003
+2=0x1008
+3=0x1009
+4=0x100A
+5=0x1014
+6=0x1017
+7=0x1200
+8=0x1800
+9=0x1A00
+10=0x1801
+11=0x1A01
+12=0x1802
+13=0x1A02
+14=0x1803
+15=0x1A03
+16=0x6000
+17=0x6020
+18=0x6401
+19=0x6404
+20=0x6405
+21=0x6406
+
+[ManufacturerObjects]
+SupportedObjects=0
+
+[1000]
+ParameterName=Device type
+ObjectType=0x7
+DataType=0x0007
+AccessType=const
+DefaultValue=0x1050191
+PDOMapping=0
+Description=Joystick without digital outputs
+
+[1001]
+ParameterName=Error register
+ObjectType=0x7
+DataType=0x0005
+AccessType=ro
+DefaultValue=0
+PDOMapping=0
+
+[1003]
+ParameterName=Pre-defined error field
+ObjectType=0x8
+SubNumber=25
+
+[1003sub0]
+ParameterName=Log size
+ObjectType=0x7
+DataType=0x0005
+AccessType=rw
+DefaultValue=0
+PDOMapping=0
+
+[1003sub1]
+ParameterName=Error 1 code
+ObjectType=0x7
+DataType=0x0007
+AccessType=ro
+DefaultValue=0
+PDOMapping=0
+
+[1003sub2]
+ParameterName=Error 2 code
+ObjectType=0x7
+DataType=0x0007
+AccessType=ro
+DefaultValue=0
+PDOMapping=0
+
+[1003sub3]
+ParameterName=Error 3 code
+ObjectType=0x7
+DataType=0x0007
+AccessType=ro
+DefaultValue=0
+PDOMapping=0
+
+[1003sub4]
+ParameterName=Error 4 code
+ObjectType=0x7
+DataType=0x0007
+AccessType=ro
+DefaultValue=0
+PDOMapping=0
+
+[1003sub5]
+ParameterName=Error 5 code
+ObjectType=0x7
+DataType=0x0007
+AccessType=ro
+DefaultValue=0
+PDOMapping=0
+
+[1003sub6]
+ParameterName=Error 6 code
+ObjectType=0x7
+DataType=0x0007
+AccessType=ro
+DefaultValue=0
+PDOMapping=0
+
+[1003sub7]
+ParameterName=Error 7 code
+ObjectType=0x7
+DataType=0x0007
+AccessType=ro
+DefaultValue=0
+PDOMapping=0
+
+[1003sub8]
+ParameterName=Error 8 code
+ObjectType=0x7
+DataType=0x0007
+AccessType=ro
+DefaultValue=0
+PDOMapping=0
+
+[1003sub9]
+ParameterName=Error 9 code
+ObjectType=0x7
+DataType=0x0007
+AccessType=ro
+DefaultValue=0
+PDOMapping=0
+
+[1003subA]
+ParameterName=Error 10 code
+ObjectType=0x7
+DataType=0x0007
+AccessType=ro
+DefaultValue=0
+PDOMapping=0
+
+[1003subB]
+ParameterName=Error 11 code
+ObjectType=0x7
+DataType=0x0007
+AccessType=ro
+DefaultValue=0
+PDOMapping=0
+
+[1003subC]
+ParameterName=Error 12 code
+ObjectType=0x7
+DataType=0x0007
+AccessType=ro
+DefaultValue=0
+PDOMapping=0
+
+[1003subD]
+ParameterName=Error 13 code
+ObjectType=0x7
+DataType=0x0007
+AccessType=ro
+DefaultValue=0
+PDOMapping=0
+
+[1003subE]
+ParameterName=Error 14 code
+ObjectType=0x7
+DataType=0x0007
+AccessType=ro
+DefaultValue=0
+PDOMapping=0
+
+[1003subF]
+ParameterName=Error 15 code
+ObjectType=0x7
+DataType=0x0007
+AccessType=ro
+DefaultValue=0
+PDOMapping=0
+
+[1003sub10]
+ParameterName=Error 16 code
+ObjectType=0x7
+DataType=0x0007
+AccessType=ro
+DefaultValue=0
+PDOMapping=0
+
+[1003sub11]
+ParameterName=Error 17 code
+ObjectType=0x7
+DataType=0x0007
+AccessType=ro
+DefaultValue=0
+PDOMapping=0
+
+[1003sub12]
+ParameterName=Error 18 code
+ObjectType=0x7
+DataType=0x0007
+AccessType=ro
+DefaultValue=0
+PDOMapping=0
+
+[1003sub13]
+ParameterName=Error 19 code
+ObjectType=0x7
+DataType=0x0007
+AccessType=ro
+DefaultValue=0
+PDOMapping=0
+
+[1003sub14]
+ParameterName=Error 20 code
+ObjectType=0x7
+DataType=0x0007
+AccessType=ro
+DefaultValue=0
+PDOMapping=0
+
+[1003sub15]
+ParameterName=Error 21 code
+ObjectType=0x7
+DataType=0x0007
+AccessType=ro
+DefaultValue=0
+PDOMapping=0
+
+[1003sub16]
+ParameterName=Error 22 code
+ObjectType=0x7
+DataType=0x0007
+AccessType=ro
+DefaultValue=0
+PDOMapping=0
+
+[1003sub17]
+ParameterName=Error 23 code
+ObjectType=0x7
+DataType=0x0007
+AccessType=ro
+DefaultValue=0
+PDOMapping=0
+
+[1003sub18]
+ParameterName=Error 24 code
+ObjectType=0x7
+DataType=0x0007
+AccessType=ro
+DefaultValue=0
+PDOMapping=0
+
+[1008]
+ParameterName=Manufacturer device name
+ObjectType=0x7
+DataType=0x0009
+AccessType=const
+DefaultValue=JOYSTICK
+PDOMapping=0
+
+[1009]
+ParameterName=Manufacturer hardware version
+ObjectType=0x7
+DataType=0x0009
+AccessType=const
+DefaultValue=
+PDOMapping=0
+
+[100A]
+ParameterName=Manufacturer software version
+ObjectType=0x7
+DataType=0x0009
+AccessType=const
+DefaultValue=
+PDOMapping=0
+
+[1014]
+ParameterName=COB-ID EMCY
+ObjectType=0x7
+DataType=0x0007
+AccessType=ro
+DefaultValue=$NODEID+0x80
+PDOMapping=0
+
+[1017]
+ParameterName=Producer heartbeat time
+ObjectType=0x7
+DataType=0x0006
+AccessType=rw
+DefaultValue=0x14
+PDOMapping=0
+Unit=ms
+
+[1018]
+ParameterName=Identity object
+ObjectType=0x9
+SubNumber=5
+
+[1018sub0]
+ParameterName=Highest sub-index supported
+ObjectType=0x7
+DataType=0x0005
+AccessType=const
+DefaultValue=4
+PDOMapping=0
+
+[1018sub1]
+ParameterName=Vendor-ID
+ObjectType=0x7
+DataType=0x0007
+AccessType=const
+DefaultValue=0x19
+PDOMapping=0
+
+[1018sub2]
+ParameterName=Product code
+ObjectType=0x7
+DataType=0x0007
+AccessType=const
+DefaultValue=1
+PDOMapping=0
+
+[1018sub3]
+ParameterName=Revision number
+ObjectType=0x7
+DataType=0x0007
+AccessType=const
+DefaultValue=0x10001
+PDOMapping=0
+
+[1018sub4]
+ParameterName=Serial number
+ObjectType=0x7
+DataType=0x0007
+AccessType=const
+DefaultValue=0
+PDOMapping=0
+
+[1200]
+ParameterName=SDO server parameter
+ObjectType=0x9
+SubNumber=3
+
+[1200sub0]
+ParameterName=Highest sub-index supported
+ObjectType=0x7
+DataType=0x0005
+AccessType=const
+DefaultValue=2
+PDOMapping=0
+
+[1200sub1]
+ParameterName=COB-ID client to server (rx)
+ObjectType=0x7
+DataType=0x0007
+AccessType=ro
+DefaultValue=$NODEID+0x600
+PDOMapping=0
+
+[1200sub2]
+ParameterName=COB-ID server to client (tx)
+ObjectType=0x7
+DataType=0x0007
+AccessType=ro
+DefaultValue=$NODEID+0x580
+PDOMapping=0
+
+[1800]
+ParameterName=TPDO1 communication parameter
+ObjectType=0x9
+SubNumber=5
+
+[1800sub0]
+ParameterName=Highest sub-index supported
+ObjectType=0x7
+DataType=0x0005
+AccessType=const
+DefaultValue=5
+PDOMapping=0
+
+[1800sub1]
+ParameterName=COB-ID used by TPDO1
+ObjectType=0x7
+DataType=0x0007
+AccessType=ro
+DefaultValue=$NODEID+0x40000180
+PDOMapping=0
+
+[1800sub2]
+ParameterName=Transmission type
+ObjectType=0x7
+DataType=0x0005
+AccessType=ro
+DefaultValue=0xFE
+PDOMapping=0
+Description=FEh: event driven (manufacturer specific)
+
+[1800sub3]
+ParameterName=Inhibit time
+ObjectType=0x7
+DataType=0x0006
+AccessType=rw
+DefaultValue=0
+PDOMapping=0
+Unit=100 us
+
+[1800sub5]
+ParameterName=Event timer
+ObjectType=0x7
+DataType=0x0006
+AccessType=rw
+DefaultValue=0x14
+PDOMapping=0
+Unit=ms
+
+[1801]
+ParameterName=TPDO2 communication parameter
+ObjectType=0x9
+SubNumber=5
+
+[1801sub0]
+ParameterName=Highest sub-index supported
+ObjectType=0x7
+DataType=0x0005
+AccessType=const
+DefaultValue=5
+PDOMapping=0
+
+[1801sub1]
+ParameterName=COB-ID used by TPDO2
+ObjectType=0x7
+DataType=0x0007
+AccessType=ro
+DefaultValue=$NODEID+0x40000280
+PDOMapping=0
+
+[1801sub2]
+ParameterName=Transmission type
+ObjectType=0x7
+DataType=0x0005
+AccessType=ro
+DefaultValue=0xFE
+PDOMapping=0
+Description=FEh: event driven (manufacturer specific)
+
+[1801sub3]
+ParameterName=Inhibit time
+ObjectType=0x7
+DataType=0x0006
+AccessType=rw
+DefaultValue=0
+PDOMapping=0
+Unit=100 us
+
+[1801sub5]
+ParameterName=Event timer
+ObjectType=0x7
+DataType=0x0006
+AccessType=rw
+DefaultValue=0x14
+PDOMapping=0
+Unit=ms
+
+[1802]
+ParameterName=TPDO3 communication parameter
+ObjectType=0x9
+SubNumber=5
+
+[1802sub0]
+ParameterName=Highest sub-index supported
+ObjectType=0x7
+DataType=0x0005
+AccessType=const
+DefaultValue=5
+PDOMapping=0
+
+[1802sub1]
+ParameterName=COB-ID used by TPDO3
+ObjectType=0x7
+DataType=0x0007
+AccessType=ro
+DefaultValue=$NODEID+0x40000380
+PDOMapping=0
+
+[1802sub2]
+ParameterName=Transmission type
+ObjectType=0x7
+DataType=0x0005
+AccessType=ro
+DefaultValue=0xFE
+PDOMapping=0
+Description=FEh: event driven (manufacturer specific)
+
+[1802sub3]
+ParameterName=Inhibit time
+ObjectType=0x7
+DataType=0x0006
+AccessType=rw
+DefaultValue=0
+PDOMapping=0
+Unit=100 us
+
+[1802sub5]
+ParameterName=Event timer
+ObjectType=0x7
+DataType=0x0006
+AccessType=rw
+DefaultValue=0x14
+PDOMapping=0
+Unit=ms
+
+[1803]
+ParameterName=TPDO4 communication parameter
+ObjectType=0x9
+SubNumber=5
+
+[1803sub0]
+ParameterName=Highest sub-index supported
+ObjectType=0x7
+DataType=0x0005
+AccessType=const
+DefaultValue=5
+PDOMapping=0
+
+[1803sub1]
+ParameterName=COB-ID used by TPDO4
+ObjectType=0x7
+DataType=0x0007
+AccessType=ro
+DefaultValue=$NODEID+0x40000480
+PDOMapping=0
+
+[1803sub2]
+ParameterName=Transmission type
+ObjectType=0x7
+DataType=0x0005
+AccessType=ro
+DefaultValue=0xFE
+PDOMapping=0
+Description=FEh: event driven (manufacturer specific)
+
+[1803sub3]
+ParameterName=Inhibit time
+ObjectType=0x7
+DataType=0x0006
+AccessType=rw
+DefaultValue=0
+PDOMapping=0
+Unit=100 us
+
+[1803sub5]
+ParameterName=Event timer
+ObjectType=0x7
+DataType=0x0006
+AccessType=rw
+DefaultValue=0x14
+PDOMapping=0
+Unit=ms
+
+[1A00]
+ParameterName=TPDO1 mapping parameter
+ObjectType=0x9
+SubNumber=40
+
+[1A00sub0]
+ParameterName=Number of mapped application objects
+ObjectType=0x7
+DataType=0x0005
+AccessType=ro
+DefaultValue=0x27
+PDOMapping=0
+
+[1A00sub1]
+ParameterName=Mapping entry 1
+ObjectType=0x7
+DataType=0x0007
+AccessType=ro
+DefaultValue=0x60000108
+PDOMapping=0
+
+[1A00sub2]
+ParameterName=Mapping entry 2
+ObjectType=0x7
+DataType=0x0007
+AccessType=ro
+DefaultValue=0x60200101
+PDOMapping=0
+
+[1A00sub3]
+ParameterName=Mapping entry 3
+ObjectType=0x7
+DataType=0x0007
+AccessType=ro
+DefaultValue=0x60200201
+PDOMapping=0
+
+[1A00sub4]
+ParameterName=Mapping entry 4
+ObjectType=0x7
+DataType=0x0007
+AccessType=ro
+DefaultValue=0x60200301
+PDOMapping=0
+
+[1A00sub5]
+ParameterName=Mapping entry 5
+ObjectType=0x7
+DataType=0x0007
+AccessType=ro
+DefaultValue=0x60200401
+PDOMapping=0
+
+[1A00sub6]
+ParameterName=Mapping entry 6
+ObjectType=0x7
+DataType=0x0007
+AccessType=ro
+DefaultValue=0x60200501
+PDOMapping=0
+
+[1A00sub7]
+ParameterName=Mapping entry 7
+ObjectType=0x7
+DataType=0x0007
+AccessType=ro
+DefaultValue=0x60200601
+PDOMapping=0
+
+[1A00sub8]
+ParameterName=Mapping entry 8
+ObjectType=0x7
+DataType=0x0007
+AccessType=ro
+DefaultValue=0x60200701
+PDOMapping=0
+
+[1A00sub9]
+ParameterName=Mapping entry 9
+ObjectType=0x7
+DataType=0x0007
+AccessType=ro
+DefaultValue=0x60200801
+PDOMapping=0
+
+[1A00subA]
+ParameterName=Mapping entry 10
+ObjectType=0x7
+DataType=0x0007
+AccessType=ro
+DefaultValue=0x60200901
+PDOMapping=0
+
+[1A00subB]
+ParameterName=Mapping entry 11
+ObjectType=0x7
+DataType=0x0007
+AccessType=ro
+DefaultValue=0x60200A01
+PDOMapping=0
+
+[1A00subC]
+ParameterName=Mapping entry 12
+ObjectType=0x7
+DataType=0x0007
+AccessType=ro
+DefaultValue=0x60200B01
+PDOMapping=0
+
+[1A00subD]
+ParameterName=Mapping entry 13
+ObjectType=0x7
+DataType=0x0007
+AccessType=ro
+DefaultValue=0x60200C01
+PDOMapping=0
+
+[1A00subE]
+ParameterName=Mapping entry 14
+ObjectType=0x7
+DataType=0x0007
+AccessType=ro
+DefaultValue=0x60000204
+PDOMapping=0
+
+[1A00subF]
+ParameterName=Mapping entry 15
+ObjectType=0x7
+DataType=0x0007
+AccessType=ro
+DefaultValue=0x60200D01
+PDOMapping=0
+
+[1A00sub10]
+ParameterName=Mapping entry 16
+ObjectType=0x7
+DataType=0x0007
+AccessType=ro
+DefaultValue=0x60200E01
+PDOMapping=0
+
+[1A00sub11]
+ParameterName=Mapping entry 17
+ObjectType=0x7
+DataType=0x0007
+AccessType=ro
+DefaultValue=0x60200F01
+PDOMapping=0
+
+[1A00sub12]
+ParameterName=Mapping entry 18
+ObjectType=0x7
+DataType=0x0007
+AccessType=ro
+DefaultValue=0x60201001
+PDOMapping=0
+
+[1A00sub13]
+ParameterName=Mapping entry 19
+ObjectType=0x7
+DataType=0x0007
+AccessType=ro
+DefaultValue=0x60201101
+PDOMapping=0
+
+[1A00sub14]
+ParameterName=Mapping entry 20
+ObjectType=0x7
+DataType=0x0007
+AccessType=ro
+DefaultValue=0x60201201
+PDOMapping=0
+
+[1A00sub15]
+ParameterName=Mapping entry 21
+ObjectType=0x7
+DataType=0x0007
+AccessType=ro
+DefaultValue=0x60201301
+PDOMapping=0
+
+[1A00sub16]
+ParameterName=Mapping entry 22
+ObjectType=0x7
+DataType=0x0007
+AccessType=ro
+DefaultValue=0x60201401
+PDOMapping=0
+
+[1A00sub17]
+ParameterName=Mapping entry 23
+ObjectType=0x7
+DataType=0x0007
+AccessType=ro
+DefaultValue=0x60201501
+PDOMapping=0
+
+[1A00sub18]
+ParameterName=Mapping entry 24
+ObjectType=0x7
+DataType=0x0007
+AccessType=ro
+DefaultValue=0x60201601
+PDOMapping=0
+
+[1A00sub19]
+ParameterName=Mapping entry 25
+ObjectType=0x7
+DataType=0x0007
+AccessType=ro
+DefaultValue=0x60201701
+PDOMapping=0
+
+[1A00sub1A]
+ParameterName=Mapping entry 26
+ObjectType=0x7
+DataType=0x0007
+AccessType=ro
+DefaultValue=0x60201801
+PDOMapping=0
+
+[1A00sub1B]
+ParameterName=Mapping entry 27
+ObjectType=0x7
+DataType=0x0007
+AccessType=ro
+DefaultValue=0x60000204
+PDOMapping=0
+
+[1A00sub1C]
+ParameterName=Mapping entry 28
+ObjectType=0x7
+DataType=0x0007
+AccessType=ro
+DefaultValue=0x60201901
+PDOMapping=0
+
+[1A00sub1D]
+ParameterName=Mapping entry 29
+ObjectType=0x7
+DataType=0x0007
+AccessType=ro
+DefaultValue=0x60201A01
+PDOMapping=0
+
+[1A00sub1E]
+ParameterName=Mapping entry 30
+ObjectType=0x7
+DataType=0x0007
+AccessType=ro
+DefaultValue=0x60201B01
+PDOMapping=0
+
+[1A00sub1F]
+ParameterName=Mapping entry 31
+ObjectType=0x7
+DataType=0x0007
+AccessType=ro
+DefaultValue=0x60201C01
+PDOMapping=0
+
+[1A00sub20]
+ParameterName=Mapping entry 32
+ObjectType=0x7
+DataType=0x0007
+AccessType=ro
+DefaultValue=0x60201D01
+PDOMapping=0
+
+[1A00sub21]
+ParameterName=Mapping entry 33
+ObjectType=0x7
+DataType=0x0007
+AccessType=ro
+DefaultValue=0x60201E01
+PDOMapping=0
+
+[1A00sub22]
+ParameterName=Mapping entry 34
+ObjectType=0x7
+DataType=0x0007
+AccessType=ro
+DefaultValue=0x60201F01
+PDOMapping=0
+
+[1A00sub23]
+ParameterName=Mapping entry 35
+ObjectType=0x7
+DataType=0x0007
+AccessType=ro
+DefaultValue=0x60202001
+PDOMapping=0
+
+[1A00sub24]
+ParameterName=Mapping entry 36
+ObjectType=0x7
+DataType=0x0007
+AccessType=ro
+DefaultValue=0x60202101
+PDOMapping=0
+
+[1A00sub25]
+ParameterName=Mapping entry 37
+ObjectType=0x7
+DataType=0x0007
+AccessType=ro
+DefaultValue=0x60202201
+PDOMapping=0
+
+[1A00sub26]
+ParameterName=Mapping entry 38
+ObjectType=0x7
+DataType=0x0007
+AccessType=ro
+DefaultValue=0x60202301
+PDOMapping=0
+
+[1A00sub27]
+ParameterName=Mapping entry 39
+ObjectType=0x7
+DataType=0x0007
+AccessType=ro
+DefaultValue=0x60202401
+PDOMapping=0
+
+[1A01]
+ParameterName=TPDO2 mapping parameter
+ObjectType=0x9
+SubNumber=7
+
+[1A01sub0]
+ParameterName=Number of mapped application objects
+ObjectType=0x7
+DataType=0x0005
+AccessType=ro
+DefaultValue=6
+PDOMapping=0
+
+[1A01sub1]
+ParameterName=Mapping entry 1
+ObjectType=0x7
+DataType=0x0007
+AccessType=ro
+DefaultValue=0x64010110
+PDOMapping=0
+
+[1A01sub2]
+ParameterName=Mapping entry 2
+ObjectType=0x7
+DataType=0x0007
+AccessType=ro
+DefaultValue=0x64010210
+PDOMapping=0
+
+[1A01sub3]
+ParameterName=Mapping entry 3
+ObjectType=0x7
+DataType=0x0007
+AccessType=ro
+DefaultValue=0x64050110
+PDOMapping=0
+
+[1A01sub4]
+ParameterName=Mapping entry 4
+ObjectType=0x7
+DataType=0x0007
+AccessType=ro
+DefaultValue=0x64040102
+PDOMapping=0
+
+[1A01sub5]
+ParameterName=Mapping entry 5
+ObjectType=0x7
+DataType=0x0007
+AccessType=ro
+DefaultValue=0x64040202
+PDOMapping=0
+
+[1A01sub6]
+ParameterName=Mapping entry 6
+ObjectType=0x7
+DataType=0x0007
+AccessType=ro
+DefaultValue=0x64060102
+PDOMapping=0
+
+[1A02]
+ParameterName=TPDO3 mapping parameter
+ObjectType=0x9
+SubNumber=7
+
+[1A02sub0]
+ParameterName=Number of mapped application objects
+ObjectType=0x7
+DataType=0x0005
+AccessType=ro
+DefaultValue=6
+PDOMapping=0
+
+[1A02sub1]
+ParameterName=Mapping entry 1
+ObjectType=0x7
+DataType=0x0007
+AccessType=ro
+DefaultValue=0x64010310
+PDOMapping=0
+
+[1A02sub2]
+ParameterName=Mapping entry 2
+ObjectType=0x7
+DataType=0x0007
+AccessType=ro
+DefaultValue=0x64010410
+PDOMapping=0
+
+[1A02sub3]
+ParameterName=Mapping entry 3
+ObjectType=0x7
+DataType=0x0007
+AccessType=ro
+DefaultValue=0x64010510
+PDOMapping=0
+
+[1A02sub4]
+ParameterName=Mapping entry 4
+ObjectType=0x7
+DataType=0x0007
+AccessType=ro
+DefaultValue=0x64040302
+PDOMapping=0
+
+[1A02sub5]
+ParameterName=Mapping entry 5
+ObjectType=0x7
+DataType=0x0007
+AccessType=ro
+DefaultValue=0x64040402
+PDOMapping=0
+
+[1A02sub6]
+ParameterName=Mapping entry 6
+ObjectType=0x7
+DataType=0x0007
+AccessType=ro
+DefaultValue=0x64040502
+PDOMapping=0
+
+[1A03]
+ParameterName=TPDO4 mapping parameter
+ObjectType=0x9
+SubNumber=5
+
+[1A03sub0]
+ParameterName=Number of mapped application objects
+ObjectType=0x7
+DataType=0x0005
+AccessType=ro
+DefaultValue=4
+PDOMapping=0
+
+[1A03sub1]
+ParameterName=Mapping entry 1
+ObjectType=0x7
+DataType=0x0007
+AccessType=ro
+DefaultValue=0x64010610
+PDOMapping=0
+
+[1A03sub2]
+ParameterName=Mapping entry 2
+ObjectType=0x7
+DataType=0x0007
+AccessType=ro
+DefaultValue=0x64010710
+PDOMapping=0
+
+[1A03sub3]
+ParameterName=Mapping entry 3
+ObjectType=0x7
+DataType=0x0007
+AccessType=ro
+DefaultValue=0x64010810
+PDOMapping=0
+
+[1A03sub4]
+ParameterName=Mapping entry 4
+ObjectType=0x7
+DataType=0x0007
+AccessType=ro
+DefaultValue=0x64010910
+PDOMapping=0
+
+[6000]
+ParameterName=Read input 8-bit
+ObjectType=0x8
+SubNumber=3
+
+[6000sub0]
+ParameterName=Number of inputs 8-bit
+ObjectType=0x7
+DataType=0x0005
+AccessType=ro
+DefaultValue=2
+PDOMapping=0
+
+[6000sub1]
+ParameterName=Proportional memory freeze
+ObjectType=0x7
+DataType=0x0005
+AccessType=ro
+DefaultValue=0
+PDOMapping=1
+Description=Not supported
+
+[6000sub2]
+ParameterName=Reserved
+ObjectType=0x7
+DataType=0x0005
+AccessType=ro
+DefaultValue=0
+PDOMapping=1
+
+[6020]
+ParameterName=Read input bit (buttons)
+ObjectType=0x8
+SubNumber=49
+
+[6020sub0]
+ParameterName=Number of input bits
+ObjectType=0x7
+DataType=0x0005
+AccessType=ro
+DefaultValue=0x30
+PDOMapping=0
+
+[6020sub1]
+ParameterName=Button 1 pressed
+ObjectType=0x7
+DataType=0x0005
+AccessType=ro
+DefaultValue=0
+PDOMapping=1
+Description=0: not pressed, 1: pressed
+
+[6020sub2]
+ParameterName=Button 2 pressed
+ObjectType=0x7
+DataType=0x0005
+AccessType=ro
+DefaultValue=0
+PDOMapping=1
+Description=0: not pressed, 1: pressed
+
+[6020sub3]
+ParameterName=Button 3 pressed
+ObjectType=0x7
+DataType=0x0005
+AccessType=ro
+DefaultValue=0
+PDOMapping=1
+Description=0: not pressed, 1: pressed
+
+[6020sub4]
+ParameterName=Button 4 pressed
+ObjectType=0x7
+DataType=0x0005
+AccessType=ro
+DefaultValue=0
+PDOMapping=1
+Description=0: not pressed, 1: pressed
+
+[6020sub5]
+ParameterName=Button 5 pressed
+ObjectType=0x7
+DataType=0x0005
+AccessType=ro
+DefaultValue=0
+PDOMapping=1
+Description=0: not pressed, 1: pressed
+
+[6020sub6]
+ParameterName=Button 6 pressed
+ObjectType=0x7
+DataType=0x0005
+AccessType=ro
+DefaultValue=0
+PDOMapping=1
+Description=0: not pressed, 1: pressed
+
+[6020sub7]
+ParameterName=Button 7 pressed
+ObjectType=0x7
+DataType=0x0005
+AccessType=ro
+DefaultValue=0
+PDOMapping=1
+Description=0: not pressed, 1: pressed
+
+[6020sub8]
+ParameterName=Button 8 pressed
+ObjectType=0x7
+DataType=0x0005
+AccessType=ro
+DefaultValue=0
+PDOMapping=1
+Description=0: not pressed, 1: pressed
+
+[6020sub9]
+ParameterName=Button 9 pressed
+ObjectType=0x7
+DataType=0x0005
+AccessType=ro
+DefaultValue=0
+PDOMapping=1
+Description=0: not pressed, 1: pressed
+
+[6020subA]
+ParameterName=Button 10 pressed
+ObjectType=0x7
+DataType=0x0005
+AccessType=ro
+DefaultValue=0
+PDOMapping=1
+Description=0: not pressed, 1: pressed
+
+[6020subB]
+ParameterName=Button 11 pressed
+ObjectType=0x7
+DataType=0x0005
+AccessType=ro
+DefaultValue=0
+PDOMapping=1
+Description=0: not pressed, 1: pressed
+
+[6020subC]
+ParameterName=Button 12 pressed
+ObjectType=0x7
+DataType=0x0005
+AccessType=ro
+DefaultValue=0
+PDOMapping=1
+Description=0: not pressed, 1: pressed
+
+[6020subD]
+ParameterName=Button 13 pressed
+ObjectType=0x7
+DataType=0x0005
+AccessType=ro
+DefaultValue=0
+PDOMapping=1
+Description=0: not pressed, 1: pressed
+
+[6020subE]
+ParameterName=Button 14 pressed
+ObjectType=0x7
+DataType=0x0005
+AccessType=ro
+DefaultValue=0
+PDOMapping=1
+Description=0: not pressed, 1: pressed
+
+[6020subF]
+ParameterName=Button 15 pressed
+ObjectType=0x7
+DataType=0x0005
+AccessType=ro
+DefaultValue=0
+PDOMapping=1
+Description=0: not pressed, 1: pressed
+
+[6020sub10]
+ParameterName=Button 16 pressed
+ObjectType=0x7
+DataType=0x0005
+AccessType=ro
+DefaultValue=0
+PDOMapping=1
+Description=0: not pressed, 1: pressed
+
+[6020sub11]
+ParameterName=Button 17 pressed
+ObjectType=0x7
+DataType=0x0005
+AccessType=ro
+DefaultValue=0
+PDOMapping=1
+Description=0: not pressed, 1: pressed
+
+[6020sub12]
+ParameterName=Button 18 pressed
+ObjectType=0x7
+DataType=0x0005
+AccessType=ro
+DefaultValue=0
+PDOMapping=1
+Description=0: not pressed, 1: pressed
+
+[6020sub13]
+ParameterName=Button 19 pressed
+ObjectType=0x7
+DataType=0x0005
+AccessType=ro
+DefaultValue=0
+PDOMapping=1
+Description=0: not pressed, 1: pressed
+
+[6020sub14]
+ParameterName=Button 20 pressed
+ObjectType=0x7
+DataType=0x0005
+AccessType=ro
+DefaultValue=0
+PDOMapping=1
+Description=0: not pressed, 1: pressed
+
+[6020sub15]
+ParameterName=Button 21 pressed
+ObjectType=0x7
+DataType=0x0005
+AccessType=ro
+DefaultValue=0
+PDOMapping=1
+Description=0: not pressed, 1: pressed
+
+[6020sub16]
+ParameterName=Button 22 pressed
+ObjectType=0x7
+DataType=0x0005
+AccessType=ro
+DefaultValue=0
+PDOMapping=1
+Description=0: not pressed, 1: pressed
+
+[6020sub17]
+ParameterName=Button 23 pressed
+ObjectType=0x7
+DataType=0x0005
+AccessType=ro
+DefaultValue=0
+PDOMapping=1
+Description=0: not pressed, 1: pressed
+
+[6020sub18]
+ParameterName=Button 24 pressed
+ObjectType=0x7
+DataType=0x0005
+AccessType=ro
+DefaultValue=0
+PDOMapping=1
+Description=0: not pressed, 1: pressed
+
+[6020sub19]
+ParameterName=Button 1 enabled
+ObjectType=0x7
+DataType=0x0005
+AccessType=ro
+DefaultValue=0
+PDOMapping=1
+Description=0: not enabled, 1: enabled
+
+[6020sub1A]
+ParameterName=Button 2 enabled
+ObjectType=0x7
+DataType=0x0005
+AccessType=ro
+DefaultValue=0
+PDOMapping=1
+Description=0: not enabled, 1: enabled
+
+[6020sub1B]
+ParameterName=Button 3 enabled
+ObjectType=0x7
+DataType=0x0005
+AccessType=ro
+DefaultValue=0
+PDOMapping=1
+Description=0: not enabled, 1: enabled
+
+[6020sub1C]
+ParameterName=Button 4 enabled
+ObjectType=0x7
+DataType=0x0005
+AccessType=ro
+DefaultValue=0
+PDOMapping=1
+Description=0: not enabled, 1: enabled
+
+[6020sub1D]
+ParameterName=Button 5 enabled
+ObjectType=0x7
+DataType=0x0005
+AccessType=ro
+DefaultValue=0
+PDOMapping=1
+Description=0: not enabled, 1: enabled
+
+[6020sub1E]
+ParameterName=Button 6 enabled
+ObjectType=0x7
+DataType=0x0005
+AccessType=ro
+DefaultValue=0
+PDOMapping=1
+Description=0: not enabled, 1: enabled
+
+[6020sub1F]
+ParameterName=Button 7 enabled
+ObjectType=0x7
+DataType=0x0005
+AccessType=ro
+DefaultValue=0
+PDOMapping=1
+Description=0: not enabled, 1: enabled
+
+[6020sub20]
+ParameterName=Button 8 enabled
+ObjectType=0x7
+DataType=0x0005
+AccessType=ro
+DefaultValue=0
+PDOMapping=1
+Description=0: not enabled, 1: enabled
+
+[6020sub21]
+ParameterName=Button 9 enabled
+ObjectType=0x7
+DataType=0x0005
+AccessType=ro
+DefaultValue=0
+PDOMapping=1
+Description=0: not enabled, 1: enabled
+
+[6020sub22]
+ParameterName=Button 10 enabled
+ObjectType=0x7
+DataType=0x0005
+AccessType=ro
+DefaultValue=0
+PDOMapping=1
+Description=0: not enabled, 1: enabled
+
+[6020sub23]
+ParameterName=Button 11 enabled
+ObjectType=0x7
+DataType=0x0005
+AccessType=ro
+DefaultValue=0
+PDOMapping=1
+Description=0: not enabled, 1: enabled
+
+[6020sub24]
+ParameterName=Button 12 enabled
+ObjectType=0x7
+DataType=0x0005
+AccessType=ro
+DefaultValue=0
+PDOMapping=1
+Description=0: not enabled, 1: enabled
+
+[6020sub25]
+ParameterName=Button 13 enabled
+ObjectType=0x7
+DataType=0x0005
+AccessType=ro
+DefaultValue=0
+PDOMapping=1
+Description=0: not enabled, 1: enabled
+
+[6020sub26]
+ParameterName=Button 14 enabled
+ObjectType=0x7
+DataType=0x0005
+AccessType=ro
+DefaultValue=0
+PDOMapping=1
+Description=0: not enabled, 1: enabled
+
+[6020sub27]
+ParameterName=Button 15 enabled
+ObjectType=0x7
+DataType=0x0005
+AccessType=ro
+DefaultValue=0
+PDOMapping=1
+Description=0: not enabled, 1: enabled
+
+[6020sub28]
+ParameterName=Button 16 enabled
+ObjectType=0x7
+DataType=0x0005
+AccessType=ro
+DefaultValue=0
+PDOMapping=1
+Description=0: not enabled, 1: enabled
+
+[6020sub29]
+ParameterName=Button 17 enabled
+ObjectType=0x7
+DataType=0x0005
+AccessType=ro
+DefaultValue=0
+PDOMapping=1
+Description=0: not enabled, 1: enabled
+
+[6020sub2A]
+ParameterName=Button 18 enabled
+ObjectType=0x7
+DataType=0x0005
+AccessType=ro
+DefaultValue=0
+PDOMapping=1
+Description=0: not enabled, 1: enabled
+
+[6020sub2B]
+ParameterName=Button 19 enabled
+ObjectType=0x7
+DataType=0x0005
+AccessType=ro
+DefaultValue=0
+PDOMapping=1
+Description=0: not enabled, 1: enabled
+
+[6020sub2C]
+ParameterName=Button 20 enabled
+ObjectType=0x7
+DataType=0x0005
+AccessType=ro
+DefaultValue=0
+PDOMapping=1
+Description=0: not enabled, 1: enabled
+
+[6020sub2D]
+ParameterName=Button 21 enabled
+ObjectType=0x7
+DataType=0x0005
+AccessType=ro
+DefaultValue=0
+PDOMapping=1
+Description=0: not enabled, 1: enabled
+
+[6020sub2E]
+ParameterName=Button 22 enabled
+ObjectType=0x7
+DataType=0x0005
+AccessType=ro
+DefaultValue=0
+PDOMapping=1
+Description=0: not enabled, 1: enabled
+
+[6020sub2F]
+ParameterName=Button 23 enabled
+ObjectType=0x7
+DataType=0x0005
+AccessType=ro
+DefaultValue=0
+PDOMapping=1
+Description=0: not enabled, 1: enabled
+
+[6020sub30]
+ParameterName=Button 24 enabled
+ObjectType=0x7
+DataType=0x0005
+AccessType=ro
+DefaultValue=0
+PDOMapping=1
+Description=0: not enabled, 1: enabled
+
+[6401]
+ParameterName=Read analog inputs 16-bit
+ObjectType=0x8
+SubNumber=11
+
+[6401sub0]
+ParameterName=Number of analog inputs 16-bit
+ObjectType=0x7
+DataType=0x0005
+AccessType=ro
+DefaultValue=0xA
+PDOMapping=0
+
+[6401sub1]
+ParameterName=X-Axis proportional
+ObjectType=0x7
+DataType=0x0003
+AccessType=ro
+DefaultValue=0
+PDOMapping=1
+Unit=%
+Factor=0.1
+
+[6401sub2]
+ParameterName=Y-Axis proportional
+ObjectType=0x7
+DataType=0x0003
+AccessType=ro
+DefaultValue=0
+PDOMapping=1
+Unit=%
+Factor=0.1
+
+[6401sub3]
+ParameterName=Grip 1 proportional
+ObjectType=0x7
+DataType=0x0003
+AccessType=ro
+DefaultValue=0
+PDOMapping=1
+Unit=%
+Factor=0.1
+
+[6401sub4]
+ParameterName=Grip 2 proportional
+ObjectType=0x7
+DataType=0x0003
+AccessType=ro
+DefaultValue=0
+PDOMapping=1
+Unit=%
+Factor=0.1
+
+[6401sub5]
+ParameterName=Grip 3 proportional
+ObjectType=0x7
+DataType=0x0003
+AccessType=ro
+DefaultValue=0
+PDOMapping=1
+Unit=%
+Factor=0.1
+
+[6401sub6]
+ParameterName=Axis 5 (X100p11)
+ObjectType=0x7
+DataType=0x0003
+AccessType=ro
+DefaultValue=0
+PDOMapping=1
+Unit=%
+Factor=0.1
+
+[6401sub7]
+ParameterName=Axis 6 (X100p12)
+ObjectType=0x7
+DataType=0x0003
+AccessType=ro
+DefaultValue=0
+PDOMapping=1
+Unit=%
+Factor=0.1
+
+[6401sub8]
+ParameterName=Axis 7 (X100p30)
+ObjectType=0x7
+DataType=0x0003
+AccessType=ro
+DefaultValue=0
+PDOMapping=1
+Unit=%
+Factor=0.1
+
+[6401sub9]
+ParameterName=Axis 8 (X100p15)
+ObjectType=0x7
+DataType=0x0003
+AccessType=ro
+DefaultValue=0
+PDOMapping=1
+Unit=%
+Factor=0.1
+
+[6401subA]
+ParameterName=Axis 9
+ObjectType=0x7
+DataType=0x0003
+AccessType=ro
+DefaultValue=0
+PDOMapping=1
+Unit=%
+Factor=0.1
+
+[6404]
+ParameterName=Manufacturer specific input 2-bit
+ObjectType=0x8
+SubNumber=11
+
+[6404sub0]
+ParameterName=Number of inputs 2-bit
+ObjectType=0x7
+DataType=0x0005
+AccessType=ro
+DefaultValue=0xA
+PDOMapping=0
+
+[6404sub1]
+ParameterName=X-Axis neutral state
+ObjectType=0x7
+DataType=0x0005
+AccessType=ro
+DefaultValue=0
+PDOMapping=1
+Description=0: neutral, 1: out of neutral, 2: error, 3: not available
+
+[6404sub2]
+ParameterName=Y-Axis neutral state
+ObjectType=0x7
+DataType=0x0005
+AccessType=ro
+DefaultValue=0
+PDOMapping=1
+Description=0: neutral, 1: out of neutral, 2: error, 3: not available
+
+[6404sub3]
+ParameterName=Grip 1 neutral state
+ObjectType=0x7
+DataType=0x0005
+AccessType=ro
+DefaultValue=0
+PDOMapping=1
+Description=0: neutral, 1: out of neutral, 2: error, 3: not available
+
+[6404sub4]
+ParameterName=Grip 2 neutral state
+ObjectType=0x7
+DataType=0x0005
+AccessType=ro
+DefaultValue=0
+PDOMapping=1
+Description=0: neutral, 1: out of neutral, 2: error, 3: not available
+
+[6404sub5]
+ParameterName=Grip 3 neutral state
+ObjectType=0x7
+DataType=0x0005
+AccessType=ro
+DefaultValue=0
+PDOMapping=1
+Description=0: neutral, 1: out of neutral, 2: error, 3: not available
+
+[6404sub6]
+ParameterName=Axis 5 (X100p11) neutral state
+ObjectType=0x7
+DataType=0x0005
+AccessType=ro
+DefaultValue=0
+PDOMapping=1
+Description=0: neutral, 1: out of neutral, 2: error, 3: not available
+
+[6404sub7]
+ParameterName=Axis 6 (X100p12) neutral state
+ObjectType=0x7
+DataType=0x0005
+AccessType=ro
+DefaultValue=0
+PDOMapping=1
+Description=0: neutral, 1: out of neutral, 2: error, 3: not available
+
+[6404sub8]
+ParameterName=Axis 7 (X100p30) neutral state
+ObjectType=0x7
+DataType=0x0005
+AccessType=ro
+DefaultValue=0
+PDOMapping=1
+Description=0: neutral, 1: out of neutral, 2: error, 3: not available
+
+[6404sub9]
+ParameterName=Axis 8 (X100p15) neutral state
+ObjectType=0x7
+DataType=0x0005
+AccessType=ro
+DefaultValue=0
+PDOMapping=1
+Description=0: neutral, 1: out of neutral, 2: error, 3: not available
+
+[6404subA]
+ParameterName=Axis 9 neutral state
+ObjectType=0x7
+DataType=0x0005
+AccessType=ro
+DefaultValue=0
+PDOMapping=1
+Description=0: neutral, 1: out of neutral, 2: error, 3: not available
+
+[6405]
+ParameterName=Manufacturer specific reserved 16-bit
+ObjectType=0x8
+SubNumber=2
+
+[6405sub0]
+ParameterName=Number of entries
+ObjectType=0x7
+DataType=0x0005
+AccessType=ro
+DefaultValue=1
+PDOMapping=0
+
+[6405sub1]
+ParameterName=Reserved 1
+ObjectType=0x7
+DataType=0x0006
+AccessType=ro
+DefaultValue=0
+PDOMapping=1
+
+[6406]
+ParameterName=Manufacturer specific reserved 2-bit
+ObjectType=0x8
+SubNumber=2
+
+[6406sub0]
+ParameterName=Number of entries
+ObjectType=0x7
+DataType=0x0005
+AccessType=ro
+DefaultValue=1
+PDOMapping=0
+
+[6406sub1]
+ParameterName=Reserved 1
+ObjectType=0x7
+DataType=0x0005
+AccessType=ro
+DefaultValue=0
+PDOMapping=1

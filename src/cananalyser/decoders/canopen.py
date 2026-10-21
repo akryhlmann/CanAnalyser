@@ -75,6 +75,8 @@ SDO_ABORT_CODES = {
 # EMCY error code classes, most specific prefix first.
 EMCY_CODES = {
     0x0000: "Error reset or no error",
+    0x3110: "Mains over-voltage",
+    0x3120: "Mains under-voltage",
     0x8110: "CAN overrun (objects lost)",
     0x8120: "CAN in error passive mode",
     0x8130: "Life guard or heartbeat error",

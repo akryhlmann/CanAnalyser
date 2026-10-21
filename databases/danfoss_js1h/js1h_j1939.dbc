@@ -1,0 +1,157 @@
+VERSION ""
+
+
+NS_ :
+
+BS_:
+
+BU_: JS1H
+
+
+BO_ 2365445886 BJM1: 8 JS1H
+ SG_ X_NeutralPosStatus : 0|2@1+ (1,0) [0|3] "" Vector__XXX
+ SG_ X_LeverLeftNegPosStatus : 2|2@1+ (1,0) [0|3] "" Vector__XXX
+ SG_ X_LeverRightPosPosStatus : 4|2@1+ (1,0) [0|3] "" Vector__XXX
+ SG_ X_Position : 6|10@1+ (0.1,0) [0|100] "%" Vector__XXX
+ SG_ Y_NeutralPosStatus : 16|2@1+ (1,0) [0|3] "" Vector__XXX
+ SG_ Y_LeverBackNegPosStatus : 18|2@1+ (1,0) [0|3] "" Vector__XXX
+ SG_ Y_LeverForwardPosPosStatus : 20|2@1+ (1,0) [0|3] "" Vector__XXX
+ SG_ Y_Position : 22|10@1+ (0.1,0) [0|100] "%" Vector__XXX
+ SG_ Y_DetentPosStatus : 36|2@1+ (1,0) [0|3] "" Vector__XXX
+ SG_ X_DetentPosStatus : 38|2@1+ (1,0) [0|3] "" Vector__XXX
+ SG_ Button4_PressedStatus : 40|2@1+ (1,0) [0|3] "" Vector__XXX
+ SG_ Button3_PressedStatus : 42|2@1+ (1,0) [0|3] "" Vector__XXX
+ SG_ Button2_PressedStatus : 44|2@1+ (1,0) [0|3] "" Vector__XXX
+ SG_ Button1_PressedStatus : 46|2@1+ (1,0) [0|3] "" Vector__XXX
+ SG_ Button8_PressedStatus : 48|2@1+ (1,0) [0|3] "" Vector__XXX
+ SG_ Button7_PressedStatus : 50|2@1+ (1,0) [0|3] "" Vector__XXX
+ SG_ Button6_PressedStatus : 52|2@1+ (1,0) [0|3] "" Vector__XXX
+ SG_ Button5_PressedStatus : 54|2@1+ (1,0) [0|3] "" Vector__XXX
+ SG_ Button12_PressedStatus : 56|2@1+ (1,0) [0|3] "" Vector__XXX
+ SG_ Button11_PressedStatus : 58|2@1+ (1,0) [0|3] "" Vector__XXX
+ SG_ Button10_PressedStatus : 60|2@1+ (1,0) [0|3] "" Vector__XXX
+ SG_ Button9_PressedStatus : 62|2@1+ (1,0) [0|3] "" Vector__XXX
+
+BO_ 2365446142 EJM1: 8 JS1H
+ SG_ GripX_NeutralPosStatus : 0|2@1+ (1,0) [0|3] "" Vector__XXX
+ SG_ GripX_LeverLeftNegPosStatus : 2|2@1+ (1,0) [0|3] "" Vector__XXX
+ SG_ GripX_LeverRightPosPosStatus : 4|2@1+ (1,0) [0|3] "" Vector__XXX
+ SG_ GripX_Position : 6|10@1+ (0.1,0) [0|100] "%" Vector__XXX
+ SG_ GripY_NeutralPosStatus : 16|2@1+ (1,0) [0|3] "" Vector__XXX
+ SG_ GripY_LeverBackNegPosStatus : 18|2@1+ (1,0) [0|3] "" Vector__XXX
+ SG_ GripY_LeverForwardPosPosStatus : 20|2@1+ (1,0) [0|3] "" Vector__XXX
+ SG_ GripY_Position : 22|10@1+ (0.1,0) [0|100] "%" Vector__XXX
+ SG_ GripY_DetentPosStatus : 52|2@1+ (1,0) [0|3] "" Vector__XXX
+ SG_ GripX_DetentPosStatus : 54|2@1+ (1,0) [0|3] "" Vector__XXX
+
+BO_ 2365446910 BJM3: 8 JS1H
+ SG_ X_NeutralPosStatus : 0|2@1+ (1,0) [0|3] "" Vector__XXX
+ SG_ X_LeverLeftNegPosStatus : 2|2@1+ (1,0) [0|3] "" Vector__XXX
+ SG_ X_LeverRightPosPosStatus : 4|2@1+ (1,0) [0|3] "" Vector__XXX
+ SG_ X_Position : 6|10@1+ (0.1,0) [0|100] "%" Vector__XXX
+ SG_ Y_NeutralPosStatus : 16|2@1+ (1,0) [0|3] "" Vector__XXX
+ SG_ Y_LeverBackNegPosStatus : 18|2@1+ (1,0) [0|3] "" Vector__XXX
+ SG_ Y_LeverForwardPosPosStatus : 20|2@1+ (1,0) [0|3] "" Vector__XXX
+ SG_ Y_Position : 22|10@1+ (0.1,0) [0|100] "%" Vector__XXX
+ SG_ Y_DetentPosStatus : 36|2@1+ (1,0) [0|3] "" Vector__XXX
+ SG_ X_DetentPosStatus : 38|2@1+ (1,0) [0|3] "" Vector__XXX
+ SG_ Button4_PressedStatus : 40|2@1+ (1,0) [0|3] "" Vector__XXX
+ SG_ Button3_PressedStatus : 42|2@1+ (1,0) [0|3] "" Vector__XXX
+ SG_ Button2_PressedStatus : 44|2@1+ (1,0) [0|3] "" Vector__XXX
+ SG_ Button1_PressedStatus : 46|2@1+ (1,0) [0|3] "" Vector__XXX
+ SG_ Button8_PressedStatus : 48|2@1+ (1,0) [0|3] "" Vector__XXX
+ SG_ Button7_PressedStatus : 50|2@1+ (1,0) [0|3] "" Vector__XXX
+ SG_ Button6_PressedStatus : 52|2@1+ (1,0) [0|3] "" Vector__XXX
+ SG_ Button5_PressedStatus : 54|2@1+ (1,0) [0|3] "" Vector__XXX
+ SG_ Button12_PressedStatus : 56|2@1+ (1,0) [0|3] "" Vector__XXX
+ SG_ Button11_PressedStatus : 58|2@1+ (1,0) [0|3] "" Vector__XXX
+ SG_ Button10_PressedStatus : 60|2@1+ (1,0) [0|3] "" Vector__XXX
+ SG_ Button9_PressedStatus : 62|2@1+ (1,0) [0|3] "" Vector__XXX
+
+BO_ 2365447166 EJM3: 8 JS1H
+ SG_ GripX_NeutralPosStatus : 0|2@1+ (1,0) [0|3] "" Vector__XXX
+ SG_ GripX_LeverLeftNegPosStatus : 2|2@1+ (1,0) [0|3] "" Vector__XXX
+ SG_ GripX_LeverRightPosPosStatus : 4|2@1+ (1,0) [0|3] "" Vector__XXX
+ SG_ GripX_Position : 6|10@1+ (0.1,0) [0|100] "%" Vector__XXX
+ SG_ GripY_NeutralPosStatus : 16|2@1+ (1,0) [0|3] "" Vector__XXX
+ SG_ GripY_LeverBackNegPosStatus : 18|2@1+ (1,0) [0|3] "" Vector__XXX
+ SG_ GripY_LeverForwardPosPosStatus : 20|2@1+ (1,0) [0|3] "" Vector__XXX
+ SG_ GripY_Position : 22|10@1+ (0.1,0) [0|100] "%" Vector__XXX
+ SG_ GripY_DetentPosStatus : 52|2@1+ (1,0) [0|3] "" Vector__XXX
+ SG_ GripX_DetentPosStatus : 54|2@1+ (1,0) [0|3] "" Vector__XXX
+
+
+CM_ "JS1-H heavy duty joystick, SAE J1939 at 250 kbit/s. Generated from Danfoss TI BC171886484518en-001601 (rev 1601).";
+CM_ BO_ 2365445886 "Basic Joystick Message 1, PGN 64982 (0xFDD6). SA in ID is a placeholder.";
+CM_ BO_ 2365446142 "Extended Joystick Message 1, PGN 64983 (0xFDD7). SA in ID is a placeholder.";
+CM_ BO_ 2365446910 "Basic Joystick Message 3, PGN 64986 (0xFDDA). SA in ID is a placeholder.";
+CM_ BO_ 2365447166 "Extended Joystick Message 3, PGN 64987 (0xFDDB). SA in ID is a placeholder.";
+BA_DEF_ SG_ "SPN" INT 0 524287;
+BA_DEF_ BO_ "VFrameFormat" ENUM "StandardCAN","ExtendedCAN","reserved","J1939PG";
+BA_DEF_ BO_ "GenMsgCycleTime" INT 0 65535;
+BA_DEF_ "ProtocolType" STRING ;
+BA_DEF_DEF_ "SPN" 0;
+BA_DEF_DEF_ "VFrameFormat" "J1939PG";
+BA_DEF_DEF_ "GenMsgCycleTime" 0;
+BA_DEF_DEF_ "ProtocolType" "";
+BA_ "ProtocolType" "J1939";
+BA_ "GenMsgCycleTime" BO_ 2365447166 20;
+BA_ "VFrameFormat" BO_ 2365447166 3;
+BA_ "GenMsgCycleTime" BO_ 2365446910 20;
+BA_ "VFrameFormat" BO_ 2365446910 3;
+BA_ "GenMsgCycleTime" BO_ 2365446142 20;
+BA_ "VFrameFormat" BO_ 2365446142 3;
+BA_ "GenMsgCycleTime" BO_ 2365445886 20;
+BA_ "VFrameFormat" BO_ 2365445886 3;
+BA_ "SPN" SG_ 2365445886 X_Position 2660;
+BA_ "SPN" SG_ 2365445886 Y_Position 2661;
+BA_ "SPN" SG_ 2365446142 GripX_Position 2662;
+BA_ "SPN" SG_ 2365446142 GripY_Position 2663;
+VAL_ 2365445886 X_NeutralPosStatus 0 "Not in neutral position" 1 "In neutral position" 2 "Error indicator" 3 "Not available" ;
+VAL_ 2365445886 X_LeverLeftNegPosStatus 0 "Not on negative side of neutral" 1 "On negative side of neutral" 2 "Error indicator" 3 "Not available" ;
+VAL_ 2365445886 X_LeverRightPosPosStatus 0 "Not on positive side of neutral" 1 "On positive side of neutral" 2 "Error indicator" 3 "Not available" ;
+VAL_ 2365445886 Y_NeutralPosStatus 0 "Not in neutral position" 1 "In neutral position" 2 "Error indicator" 3 "Not available" ;
+VAL_ 2365445886 Y_LeverBackNegPosStatus 0 "Not on negative side of neutral" 1 "On negative side of neutral" 2 "Error indicator" 3 "Not available" ;
+VAL_ 2365445886 Y_LeverForwardPosPosStatus 0 "Not on positive side of neutral" 1 "On positive side of neutral" 2 "Error indicator" 3 "Not available" ;
+VAL_ 2365445886 Button4_PressedStatus 0 "Button not pressed" 1 "Button pressed" 2 "Error indicator" 3 "Not available" ;
+VAL_ 2365445886 Button3_PressedStatus 0 "Button not pressed" 1 "Button pressed" 2 "Error indicator" 3 "Not available" ;
+VAL_ 2365445886 Button2_PressedStatus 0 "Button not pressed" 1 "Button pressed" 2 "Error indicator" 3 "Not available" ;
+VAL_ 2365445886 Button1_PressedStatus 0 "Button not pressed" 1 "Button pressed" 2 "Error indicator" 3 "Not available" ;
+VAL_ 2365445886 Button8_PressedStatus 0 "Button not pressed" 1 "Button pressed" 2 "Error indicator" 3 "Not available" ;
+VAL_ 2365445886 Button7_PressedStatus 0 "Button not pressed" 1 "Button pressed" 2 "Error indicator" 3 "Not available" ;
+VAL_ 2365445886 Button6_PressedStatus 0 "Button not pressed" 1 "Button pressed" 2 "Error indicator" 3 "Not available" ;
+VAL_ 2365445886 Button5_PressedStatus 0 "Button not pressed" 1 "Button pressed" 2 "Error indicator" 3 "Not available" ;
+VAL_ 2365445886 Button12_PressedStatus 0 "Button not pressed" 1 "Button pressed" 2 "Error indicator" 3 "Not available" ;
+VAL_ 2365445886 Button11_PressedStatus 0 "Button not pressed" 1 "Button pressed" 2 "Error indicator" 3 "Not available" ;
+VAL_ 2365445886 Button10_PressedStatus 0 "Button not pressed" 1 "Button pressed" 2 "Error indicator" 3 "Not available" ;
+VAL_ 2365445886 Button9_PressedStatus 0 "Button not pressed" 1 "Button pressed" 2 "Error indicator" 3 "Not available" ;
+VAL_ 2365446142 GripX_NeutralPosStatus 0 "Not in neutral position" 1 "In neutral position" 2 "Error indicator" 3 "Not available" ;
+VAL_ 2365446142 GripX_LeverLeftNegPosStatus 0 "Not on negative side of neutral" 1 "On negative side of neutral" 2 "Error indicator" 3 "Not available" ;
+VAL_ 2365446142 GripX_LeverRightPosPosStatus 0 "Not on positive side of neutral" 1 "On positive side of neutral" 2 "Error indicator" 3 "Not available" ;
+VAL_ 2365446142 GripY_NeutralPosStatus 0 "Not in neutral position" 1 "In neutral position" 2 "Error indicator" 3 "Not available" ;
+VAL_ 2365446142 GripY_LeverBackNegPosStatus 0 "Not on negative side of neutral" 1 "On negative side of neutral" 2 "Error indicator" 3 "Not available" ;
+VAL_ 2365446142 GripY_LeverForwardPosPosStatus 0 "Not on positive side of neutral" 1 "On positive side of neutral" 2 "Error indicator" 3 "Not available" ;
+VAL_ 2365446910 X_NeutralPosStatus 0 "Not in neutral position" 1 "In neutral position" 2 "Error indicator" 3 "Not available" ;
+VAL_ 2365446910 X_LeverLeftNegPosStatus 0 "Not on negative side of neutral" 1 "On negative side of neutral" 2 "Error indicator" 3 "Not available" ;
+VAL_ 2365446910 X_LeverRightPosPosStatus 0 "Not on positive side of neutral" 1 "On positive side of neutral" 2 "Error indicator" 3 "Not available" ;
+VAL_ 2365446910 Y_NeutralPosStatus 0 "Not in neutral position" 1 "In neutral position" 2 "Error indicator" 3 "Not available" ;
+VAL_ 2365446910 Y_LeverBackNegPosStatus 0 "Not on negative side of neutral" 1 "On negative side of neutral" 2 "Error indicator" 3 "Not available" ;
+VAL_ 2365446910 Y_LeverForwardPosPosStatus 0 "Not on positive side of neutral" 1 "On positive side of neutral" 2 "Error indicator" 3 "Not available" ;
+VAL_ 2365446910 Button4_PressedStatus 0 "Button not pressed" 1 "Button pressed" 2 "Error indicator" 3 "Not available" ;
+VAL_ 2365446910 Button3_PressedStatus 0 "Button not pressed" 1 "Button pressed" 2 "Error indicator" 3 "Not available" ;
+VAL_ 2365446910 Button2_PressedStatus 0 "Button not pressed" 1 "Button pressed" 2 "Error indicator" 3 "Not available" ;
+VAL_ 2365446910 Button1_PressedStatus 0 "Button not pressed" 1 "Button pressed" 2 "Error indicator" 3 "Not available" ;
+VAL_ 2365446910 Button8_PressedStatus 0 "Button not pressed" 1 "Button pressed" 2 "Error indicator" 3 "Not available" ;
+VAL_ 2365446910 Button7_PressedStatus 0 "Button not pressed" 1 "Button pressed" 2 "Error indicator" 3 "Not available" ;
+VAL_ 2365446910 Button6_PressedStatus 0 "Button not pressed" 1 "Button pressed" 2 "Error indicator" 3 "Not available" ;
+VAL_ 2365446910 Button5_PressedStatus 0 "Button not pressed" 1 "Button pressed" 2 "Error indicator" 3 "Not available" ;
+VAL_ 2365446910 Button12_PressedStatus 0 "Button not pressed" 1 "Button pressed" 2 "Error indicator" 3 "Not available" ;
+VAL_ 2365446910 Button11_PressedStatus 0 "Button not pressed" 1 "Button pressed" 2 "Error indicator" 3 "Not available" ;
+VAL_ 2365446910 Button10_PressedStatus 0 "Button not pressed" 1 "Button pressed" 2 "Error indicator" 3 "Not available" ;
+VAL_ 2365446910 Button9_PressedStatus 0 "Button not pressed" 1 "Button pressed" 2 "Error indicator" 3 "Not available" ;
+VAL_ 2365447166 GripX_NeutralPosStatus 0 "Not in neutral position" 1 "In neutral position" 2 "Error indicator" 3 "Not available" ;
+VAL_ 2365447166 GripX_LeverLeftNegPosStatus 0 "Not on negative side of neutral" 1 "On negative side of neutral" 2 "Error indicator" 3 "Not available" ;
+VAL_ 2365447166 GripX_LeverRightPosPosStatus 0 "Not on positive side of neutral" 1 "On positive side of neutral" 2 "Error indicator" 3 "Not available" ;
+VAL_ 2365447166 GripY_NeutralPosStatus 0 "Not in neutral position" 1 "In neutral position" 2 "Error indicator" 3 "Not available" ;
+VAL_ 2365447166 GripY_LeverBackNegPosStatus 0 "Not on negative side of neutral" 1 "On negative side of neutral" 2 "Error indicator" 3 "Not available" ;
+VAL_ 2365447166 GripY_LeverForwardPosPosStatus 0 "Not on positive side of neutral" 1 "On positive side of neutral" 2 "Error indicator" 3 "Not available" ;

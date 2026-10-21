@@ -359,7 +359,7 @@ def _j1939_status(raw, length: int, signed: bool) -> str | None:
     """Return "n/a" / "error" for the J1939 reserved raw value ranges."""
     if signed or not isinstance(raw, int) or length < 2:
         return None
-    if length >= 8:
+    if length % 8 == 0:  # byte-sized parameters reserve whole ranges (0xFExx, 0xFFxx)
         top = raw >> (length - 8)
         if top == 0xFF:
             return "n/a"
