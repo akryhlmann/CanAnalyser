@@ -1,0 +1,210 @@
+[FileInfo]
+FileName=sim_node.eds
+FileVersion=1
+FileRevision=0
+EDSVersion=4.0
+Description=Simulated I/O node used by the CanAnalyser simulator
+CreatedBy=CanAnalyser
+
+[DeviceInfo]
+VendorName=CanAnalyser
+VendorNumber=0
+ProductName=SimNode
+ProductNumber=1
+RevisionNumber=1
+OrderCode=SIM-1
+BaudRate_125=1
+BaudRate_250=1
+BaudRate_500=1
+BaudRate_1000=1
+SimpleBootUpMaster=0
+SimpleBootUpSlave=1
+Granularity=8
+NrOfRXPDO=0
+NrOfTXPDO=1
+LSS_Supported=0
+
+[DummyUsage]
+Dummy0001=0
+Dummy0002=0
+Dummy0003=0
+Dummy0004=0
+Dummy0005=0
+Dummy0006=0
+Dummy0007=0
+
+[Comments]
+Lines=0
+
+[MandatoryObjects]
+SupportedObjects=3
+1=0x1000
+2=0x1001
+3=0x1018
+
+[OptionalObjects]
+SupportedObjects=5
+1=0x1008
+2=0x1017
+3=0x1800
+4=0x1A00
+5=0x6000
+
+[ManufacturerObjects]
+SupportedObjects=0
+
+[1000]
+ParameterName=Device type
+ObjectType=0x7
+DataType=0x0007
+AccessType=ro
+DefaultValue=0x00000191
+PDOMapping=0
+
+[1001]
+ParameterName=Error register
+ObjectType=0x7
+DataType=0x0005
+AccessType=ro
+DefaultValue=0
+PDOMapping=1
+
+[1008]
+ParameterName=Manufacturer device name
+ObjectType=0x7
+DataType=0x0009
+AccessType=const
+DefaultValue=SimNode
+PDOMapping=0
+
+[1017]
+ParameterName=Producer heartbeat time
+ObjectType=0x7
+DataType=0x0006
+AccessType=rw
+DefaultValue=1000
+PDOMapping=0
+
+[1018]
+ParameterName=Identity object
+ObjectType=0x9
+SubNumber=2
+
+[1018sub0]
+ParameterName=Highest sub-index supported
+ObjectType=0x7
+DataType=0x0005
+AccessType=ro
+DefaultValue=1
+PDOMapping=0
+
+[1018sub1]
+ParameterName=Vendor-ID
+ObjectType=0x7
+DataType=0x0007
+AccessType=ro
+DefaultValue=0
+PDOMapping=0
+
+[1800]
+ParameterName=TPDO1 communication parameter
+ObjectType=0x9
+SubNumber=3
+
+[1800sub0]
+ParameterName=Highest sub-index supported
+ObjectType=0x7
+DataType=0x0005
+AccessType=ro
+DefaultValue=2
+PDOMapping=0
+
+[1800sub1]
+ParameterName=COB-ID used by TPDO
+ObjectType=0x7
+DataType=0x0007
+AccessType=rw
+DefaultValue=$NODEID+0x180
+PDOMapping=0
+
+[1800sub2]
+ParameterName=Transmission type
+ObjectType=0x7
+DataType=0x0005
+AccessType=rw
+DefaultValue=255
+PDOMapping=0
+
+[1A00]
+ParameterName=TPDO1 mapping parameter
+ObjectType=0x9
+SubNumber=4
+
+[1A00sub0]
+ParameterName=Number of mapped objects
+ObjectType=0x7
+DataType=0x0005
+AccessType=rw
+DefaultValue=2
+PDOMapping=0
+
+[1A00sub1]
+ParameterName=Mapped object 1
+ObjectType=0x7
+DataType=0x0007
+AccessType=rw
+DefaultValue=0x60000110
+PDOMapping=0
+
+[1A00sub2]
+ParameterName=Mapped object 2
+ObjectType=0x7
+DataType=0x0007
+AccessType=rw
+DefaultValue=0x60000210
+PDOMapping=0
+
+[1A00sub3]
+ParameterName=Mapped object 3
+ObjectType=0x7
+DataType=0x0007
+AccessType=rw
+DefaultValue=0x60000308
+PDOMapping=0
+
+[6000]
+ParameterName=Process data
+ObjectType=0x9
+SubNumber=4
+
+[6000sub0]
+ParameterName=Highest sub-index supported
+ObjectType=0x7
+DataType=0x0005
+AccessType=ro
+DefaultValue=3
+PDOMapping=0
+
+[6000sub1]
+ParameterName=Motor speed
+ObjectType=0x7
+DataType=0x0006
+AccessType=ro
+DefaultValue=0
+PDOMapping=1
+
+[6000sub2]
+ParameterName=Motor current
+ObjectType=0x7
+DataType=0x0003
+AccessType=ro
+DefaultValue=0
+PDOMapping=1
+
+[6000sub3]
+ParameterName=Status
+ObjectType=0x7
+DataType=0x0005
+AccessType=ro
+DefaultValue=0
+PDOMapping=1
