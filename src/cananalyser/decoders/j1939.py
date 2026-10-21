@@ -261,7 +261,7 @@ class J1939Decoder:
                 value = status
             elif not isinstance(value, (int, float)):
                 value = str(value)
-            out.append(SignalValue(message.name, signal.name, value, signal.unit or "", sa))
+            out.append(SignalValue(message.name, signal.name, value, signal.unit or "", sa, raw[signal.name]))
         return out
 
     def _decode_dm(self, pgn: int, sa: int, data: bytes) -> FaultSet:

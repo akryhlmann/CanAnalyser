@@ -21,6 +21,7 @@ class SignalValue:
     value: Any
     unit: str = ""
     node: int | None = None
+    raw: Any = None  # value as transmitted, before scaling / value tables
 
 
 @dataclass(frozen=True)

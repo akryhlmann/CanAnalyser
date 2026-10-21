@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from collections import deque
+from dataclasses import dataclass
 
 from PySide6.QtCore import QAbstractTableModel, QModelIndex, QSortFilterProxyModel, Qt
 from PySide6.QtGui import QBrush, QColor
@@ -132,15 +133,43 @@ class TraceFilter(QSortFilterProxyModel):
         return False
 
 
-class OverviewModel(_Table):
-    """One row per CAN ID with count, measured period and latest content."""
+@dataclass
+class _MessageStats:
+    count: int
+    first: float
+    last: float
+    frame: DecodedFrame
+    period: float | None = None
+    min_period: float | None = None
+    max_period: float | None = None
 
-    headers = ("ID", "Count", "Period ms", "DLC", "Data", "Decoded")
+    def add(self, frame: DecodedFrame) -> None:
+        ts = frame.msg.timestamp
+        self.period = ts - self.last
+        self.min_period = self.period if self.min_period is None else min(self.min_period, self.period)
+        self.max_period = self.period if self.max_period is None else max(self.max_period, self.period)
+        self.count += 1
+        self.last = ts
+        self.frame = frame
+
+    @property
+    def avg_period(self) -> float | None:
+        return (self.last - self.first) / (self.count - 1) if self.count > 1 else None
+
+
+def fmt_ms(seconds: float | None) -> str:
+    return "" if seconds is None else f"{seconds * 1000:.1f}"
+
+
+class OverviewModel(_Table):
+    """One row per CAN ID with count, period statistics and latest content."""
+
+    headers = ("ID", "Count", "Last ms", "Avg ms", "Min ms", "Max ms", "DLC", "Data", "Decoded")
 
     def __init__(self):
         super().__init__()
         self._keys: list[tuple[int, bool]] = []
-        self._stats: dict[tuple[int, bool], list] = {}  # key -> [count, period, last_ts, frame]
+        self._stats: dict[tuple[int, bool], _MessageStats] = {}
 
     def _rows(self):
         return self._keys
@@ -152,13 +181,10 @@ class OverviewModel(_Table):
             key = (msg.arbitration_id, msg.is_extended_id)
             stat = self._stats.get(key)
             if stat is None:
-                self._stats[key] = [1, None, msg.timestamp, frame]
+                self._stats[key] = _MessageStats(1, msg.timestamp, msg.timestamp, frame)
                 new.append(key)
             else:
-                stat[1] = msg.timestamp - stat[2]
-                stat[0] += 1
-                stat[2] = msg.timestamp
-                stat[3] = frame
+                stat.add(frame)
         if new:
             first = len(self._keys)
             self.beginInsertRows(QModelIndex(), first, first + len(new) - 1)
@@ -173,27 +199,41 @@ class OverviewModel(_Table):
         self.endResetModel()
 
     def data(self, index, role=Qt.DisplayRole):
-        count, period, _, frame = self._stats[self._keys[index.row()]]
+        stat = self._stats[self._keys[index.row()]]
         if role == Qt.DisplayRole:
+            msg = stat.frame.msg
             return (
-                fmt_id(frame.msg),
-                str(count),
-                f"{period * 1000:.1f}" if period is not None else "",
-                str(frame.msg.dlc),
-                fmt_data(frame.msg),
-                frame.summary,
+                fmt_id(msg),
+                str(stat.count),
+                fmt_ms(stat.period),
+                fmt_ms(stat.avg_period),
+                fmt_ms(stat.min_period),
+                fmt_ms(stat.max_period),
+                str(msg.dlc),
+                fmt_data(msg),
+                stat.frame.summary,
             )[index.column()]
+        if role == Qt.TextAlignmentRole and 1 <= index.column() <= 5:
+            return int(Qt.AlignRight | Qt.AlignVCenter)
         return None
 
 
+def fmt_raw(raw) -> str:
+    if isinstance(raw, int) and not isinstance(raw, bool):
+        return f"{raw} (0x{raw:X})" if raw >= 0 else str(raw)
+    return "" if raw is None else str(raw)
+
+
 class SignalModel(_Table):
-    headers = ("Source", "Signal", "Value", "Unit", "Node", "Updated")
+    """Latest value per signal, with its raw value and update interval."""
+
+    headers = ("Source", "Signal", "Value", "Raw", "Unit", "Node", "Interval ms")
 
     def __init__(self):
         super().__init__()
-        self.t0: float | None = None
         self._keys: list[tuple] = []
-        self._values: dict[tuple, tuple[SignalValue, float]] = {}
+        # key -> (latest value, timestamp, interval since the previous update)
+        self._values: dict[tuple, tuple[SignalValue, float, float | None]] = {}
 
     def _rows(self):
         return self._keys
@@ -201,13 +241,16 @@ class SignalModel(_Table):
     def update(self, frames: list[DecodedFrame]) -> None:
         new = []
         for frame in frames:
-            if self.t0 is None:
-                self.t0 = frame.msg.timestamp
+            ts = frame.msg.timestamp
             for sig in frame.signals:
                 key = (sig.source, sig.name, sig.node)
-                if key not in self._values:
+                previous = self._values.get(key)
+                if previous is None:
                     new.append(key)
-                self._values[key] = (sig, frame.msg.timestamp)
+                    interval = None
+                else:
+                    interval = ts - previous[1]
+                self._values[key] = (sig, ts, interval)
         if new:
             first = len(self._keys)
             self.beginInsertRows(QModelIndex(), first, first + len(new) - 1)
@@ -219,17 +262,18 @@ class SignalModel(_Table):
         self.beginResetModel()
         self._keys.clear()
         self._values.clear()
-        self.t0 = None
         self.endResetModel()
 
     def data(self, index, role=Qt.DisplayRole):
-        if role != Qt.DisplayRole:
-            return None
-        sig, ts = self._values[self._keys[index.row()]]
-        node = "" if sig.node is None else f"0x{sig.node:02X} ({sig.node})"
-        return (sig.source, sig.name, fmt_value(sig.value), sig.unit, node, f"{ts - (self.t0 or 0):.3f}")[
-            index.column()
-        ]
+        sig, _, interval = self._values[self._keys[index.row()]]
+        if role == Qt.DisplayRole:
+            node = "" if sig.node is None else f"0x{sig.node:02X} ({sig.node})"
+            return (sig.source, sig.name, fmt_value(sig.value), fmt_raw(sig.raw), sig.unit, node, fmt_ms(interval))[
+                index.column()
+            ]
+        if role == Qt.TextAlignmentRole and index.column() == 6:
+            return int(Qt.AlignRight | Qt.AlignVCenter)
+        return None
 
 
 class NodeModel(_Table):

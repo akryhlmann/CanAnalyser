@@ -205,12 +205,12 @@ class MainWindow(QMainWindow):
         tabs.addTab(trace_page, "Trace")
 
         overview_view = make_table(self.overview)
-        for col, width in enumerate((80, 70, 80, 35, 190)):
+        for col, width in enumerate((80, 60, 60, 60, 60, 60, 35, 190)):
             overview_view.setColumnWidth(col, width)
         tabs.addTab(overview_view, "Messages")
 
         signal_view = make_table(self.signals)
-        for col, width in enumerate((160, 260, 160, 60, 80)):
+        for col, width in enumerate((160, 260, 160, 110, 60, 80)):
             signal_view.setColumnWidth(col, width)
         tabs.addTab(signal_view, "Signals")
 
