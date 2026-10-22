@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import sys
 import time
 from collections import deque
 from pathlib import Path
@@ -38,13 +39,31 @@ from cananalyser.decoders.canopen import (
     NMT_STOP,
     nmt_frame,
 )
+from cananalyser.gui.joystick_view import JoystickView
 from cananalyser.gui.models import FaultModel, NodeModel, OverviewModel, SignalModel, TraceFilter, TraceModel
+from cananalyser.gui.redundancy_view import RedundancyView
+from cananalyser.gui.trend_view import TrendView
 from cananalyser.model import DecodedFrame
-from cananalyser.sim import SIMULATORS
+from cananalyser.profiles.js1h import JS1HProfile
+from cananalyser.redundancy import RedundancyChecker
+from cananalyser.sim import SIMULATORS, JS1HCANopenSimulator
+from cananalyser.trend import TrendStore
 
 J1939 = "J1939"
 CANOPEN = "CANopen"
 SIM_CHANNEL = "cananalyser-sim"
+
+
+def database_dir() -> str:
+    """Folder with the bundled DBC/EDS files: next to the .exe, or in the repo."""
+    if getattr(sys, "frozen", False):
+        base = Path(sys.executable).parent
+    else:
+        base = Path(__file__).resolve().parents[3]
+    folder = base / "databases"
+    return str(folder) if folder.is_dir() else ""
+
+
 LOG_FILTER = "Vector BLF (*.blf);;Vector ASC (*.asc);;candump log (*.log);;PEAK TRC (*.trc);;CSV (*.csv)"
 
 
@@ -86,7 +105,7 @@ def make_table(model, stretch_last: bool = True) -> QTableView:
 
 
 class MainWindow(QMainWindow):
-    REFRESH_MS = 100
+    REFRESH_MS = 50  # 20 Hz, so the joystick view moves smoothly
 
     def __init__(self):
         super().__init__()
@@ -111,6 +130,12 @@ class MainWindow(QMainWindow):
         self.signals = SignalModel()
         self.nodes = NodeModel()
         self.faults = FaultModel()
+        self.profile = JS1HProfile()
+        self.trend_store = TrendStore()
+        self._bus_time = 0.0
+        self._bus_time_mono = time.monotonic()  # monotonic clock when _bus_time was taken
+        self.redundancy = RedundancyChecker()
+        self.j1939.inverted = self.redundancy.inverted_sources
 
         self._build_toolbar()
         self._build_tabs()
@@ -136,7 +161,9 @@ class MainWindow(QMainWindow):
         self.source = QComboBox()
         for label, channel in kvaser_channels() or [("Kvaser ch 0", 0), ("Kvaser ch 1", 1)]:
             self.source.addItem(label, ("kvaser", channel))
-        self.source.addItem("Simulator", ("sim", SIM_CHANNEL))
+        self.source.addItem("Simulator (engine ECU / I/O node)", ("sim", "generic"))
+        self.source.addItem("Simulator (JS1-H joystick)", ("sim", "js1h"))
+        self.source.addItem("Simulator (JS1-H SBW redundant, J1939)", ("sim", "js1h-sbw"))
         bar.addWidget(QLabel("  Interface "))
         bar.addWidget(self.source)
 
@@ -192,12 +219,12 @@ class MainWindow(QMainWindow):
         tabs.addTab(trace_page, "Trace")
 
         overview_view = make_table(self.overview)
-        for col, width in enumerate((80, 70, 80, 35, 190)):
+        for col, width in enumerate((80, 60, 60, 60, 60, 60, 35, 190)):
             overview_view.setColumnWidth(col, width)
         tabs.addTab(overview_view, "Messages")
 
         signal_view = make_table(self.signals)
-        for col, width in enumerate((160, 260, 160, 60, 80)):
+        for col, width in enumerate((160, 260, 160, 110, 60, 80)):
             signal_view.setColumnWidth(col, width)
         tabs.addTab(signal_view, "Signals")
 
@@ -215,6 +242,16 @@ class MainWindow(QMainWindow):
             fault_view.setColumnWidth(col, width)
         self.tabs = tabs
         self.fault_tab = tabs.addTab(fault_view, "Faults")
+
+        self.joystick_view = JoystickView()
+        tabs.addTab(self.joystick_view, "Joystick")
+        self.redundancy_view = RedundancyView(self.redundancy)
+        self.redundancy_view.config_changed.connect(self._set_redundancy_config)
+        tabs.addTab(self.redundancy_view, "Redundancy")
+        self.trend_view = TrendView(self.trend_store)
+        tabs.addTab(self.trend_view, "Trend")
+        signal_view.setToolTip("Double-click a signal to plot it in the Trend tab")
+        signal_view.doubleClicked.connect(self._plot_signal)
 
     def _build_nmt_panel(self) -> QGroupBox:
         self.nmt_box = QGroupBox("CANopen NMT")
@@ -251,8 +288,14 @@ class MainWindow(QMainWindow):
         self.monitor.decoder = self.decoder
         try:
             if kind == "sim":
-                self.simulator = SIMULATORS[self.protocol.currentText().lower()](channel)
-                self.monitor.start_bus(BusConfig("virtual", channel, listen_only=self.listen_only.isChecked()))
+                key = (self.protocol.currentText().lower(), channel)
+                if key not in SIMULATORS:
+                    QMessageBox.information(self, "Simulator", f"{self.source.currentText()} is only available for J1939.")
+                    return
+                if channel.startswith("js1h"):
+                    self._load_js1h_databases()
+                self.simulator = SIMULATORS[key](SIM_CHANNEL)
+                self.monitor.start_bus(BusConfig("virtual", SIM_CHANNEL, listen_only=self.listen_only.isChecked()))
                 self.simulator.start()
             else:
                 config = BusConfig(kind, channel, self.bitrate.currentData(), self.listen_only.isChecked())
@@ -302,7 +345,7 @@ class MainWindow(QMainWindow):
 
     def _load_database(self) -> None:
         if self.protocol.currentText() == J1939:
-            path, _ = QFileDialog.getOpenFileName(self, "Load J1939 DBC", "", "DBC files (*.dbc)")
+            path, _ = QFileDialog.getOpenFileName(self, "Load J1939 DBC", database_dir(), "DBC files (*.dbc)")
             if not path:
                 return
             try:
@@ -311,7 +354,7 @@ class MainWindow(QMainWindow):
                 QMessageBox.critical(self, "DBC error", str(exc))
                 return
         else:
-            path, _ = QFileDialog.getOpenFileName(self, "Load EDS/DCF", "", "Device description (*.eds *.dcf)")
+            path, _ = QFileDialog.getOpenFileName(self, "Load EDS/DCF", database_dir(), "Device description (*.eds *.dcf)")
             if not path:
                 return
             node_id, ok = QInputDialog.getInt(self, "Node ID", f"Node ID for {Path(path).name}:", 1, 1, 127)
@@ -334,7 +377,42 @@ class MainWindow(QMainWindow):
     def _clear(self) -> None:
         for model in (self.trace, self.overview, self.signals, self.nodes, self.faults):
             model.clear()
+        self.profile.clear()
+        self.redundancy.reset()
+        self.trend_store.clear()
+        self.trend_view.clear()
         self.total_frames = 0
+
+    def _load_js1h_databases(self) -> None:
+        """Load the bundled JS1-H DBC/EDS for the simulator, unless already loaded."""
+        folder = Path(database_dir() or ".") / "danfoss_js1h"
+        if self.protocol.currentText() == J1939:
+            path = folder / "js1h_j1939.dbc"
+            if not path.is_file() or path.name in self._loaded_files:
+                return
+            self.j1939.load_dbc(path)
+        else:
+            path = folder / "js1h_can.eds"
+            if not path.is_file() or self.canopen.object_dictionary(JS1HCANopenSimulator.NODE):
+                return
+            self.canopen.load_eds(path, JS1HCANopenSimulator.NODE)
+        self._loaded_files.append(path.name)
+
+    def _set_redundancy_config(self, config) -> None:
+        self.redundancy.config = config
+        self.redundancy.reset()
+        self.j1939.inverted = self.redundancy.inverted_sources
+        self.faults.apply([self.redundancy.fault_set()])
+
+    def _redundant_partners(self) -> dict:
+        cfg = self.redundancy.config
+        primary, secondary = ("J1939", cfg.primary_sa, "1"), ("J1939", cfg.secondary_sa, "1")
+        return {primary: secondary, secondary: primary}
+
+    def _plot_signal(self, index) -> None:
+        key = self.signals.key_at(index.row())
+        self.trend_view.select(key)
+        self.tabs.setCurrentWidget(self.trend_view)
 
     def _update_controls(self) -> None:
         running = self.monitor.running
@@ -355,6 +433,17 @@ class MainWindow(QMainWindow):
             self._ingest(frames)
         elif self.nodes.rowCount():
             self.nodes._refresh_all()  # keep "last seen" ages ticking
+        current = self.tabs.currentWidget()
+        if current is self.joystick_view:
+            self.joystick_view.refresh(self.profile, self._bus_time, self._redundant_partners())
+        elif current is self.redundancy_view:
+            self.redundancy_view.refresh()
+        elif current is self.trend_view:
+            self.trend_view.refresh()
+        if self.monitor.running and self.protocol.currentText() == J1939:
+            # Timeouts must also show while nothing arrives at all.
+            self.redundancy.check_timeouts(self._bus_time + time.monotonic() - self._bus_time_mono)
+            self.faults.apply([self.redundancy.fault_set()])
         if self.monitor.error:
             error = self.monitor.error
             self._disconnect()
@@ -373,6 +462,16 @@ class MainWindow(QMainWindow):
         self.signals.update(frames)
         self.nodes.update(frames)
         self.faults.update(frames)
+        self.profile.update(frames)
+        self._bus_time = frames[-1].msg.timestamp
+        self._bus_time_mono = time.monotonic()
+        new_series = self.trend_store.add(frames)
+        new_series += self.trend_store.add_samples(self.profile.take_derived())
+        if self.protocol.currentText() == J1939:
+            self.redundancy.update(frames, self._bus_time)
+            new_series += self.trend_store.add_samples(self.redundancy.take_derived())
+        if new_series:
+            self.trend_view.add_keys(new_series)
         count = self.faults.active_count
         self.tabs.setTabText(self.fault_tab, f"Faults ({count})" if count else "Faults")
 

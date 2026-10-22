@@ -21,6 +21,8 @@ class SignalValue:
     value: Any
     unit: str = ""
     node: int | None = None
+    raw: Any = None  # value as transmitted, before scaling / value tables
+    obj: tuple[int, int] | None = None  # CANopen (index, subindex), if known
 
 
 @dataclass(frozen=True)

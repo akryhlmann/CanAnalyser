@@ -386,7 +386,11 @@ class CANopenDecoder:
         frame.summary = f"SDO {verb} node {node} 0x{mux[0]:04X}:{mux[1]:02X} = {_fmt(value)}"
         var = self._variable(node, *mux)
         frame.signals.append(
-            SignalValue(f"SDO node {node}", self._var_label(node, *mux), value, var.unit if var else "", node)
+            SignalValue(
+                f"SDO node {node}", self._var_label(node, *mux), value, var.unit if var else "", node,
+                int.from_bytes(raw, "little") if 0 < len(raw) <= 8 else None,
+                mux,
+            )
         )
         if transfer.index in _PDO_PARAM_RANGE and raw:
             self._learned.setdefault(node, {})[mux] = int.from_bytes(raw[:4], "little")
@@ -447,7 +451,9 @@ class CANopenDecoder:
             var = self._variable(pdo.node, index, sub)
             value = _decode_bits(var, raw, bits)
             label = self._var_label(pdo.node, index, sub)
-            frame.signals.append(SignalValue(pdo.name, label, value, var.unit if var else "", pdo.node))
+            frame.signals.append(
+                SignalValue(pdo.name, label, value, var.unit if var else "", pdo.node, raw, (index, sub))
+            )
             parts.append(f"{label}={_fmt(value)}")
         frame.summary = f"{pdo.name} node {pdo.node}: " + ", ".join(parts)
         if available < bits_total:
