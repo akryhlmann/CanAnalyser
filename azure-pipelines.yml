@@ -1,0 +1,55 @@
+# Azure DevOps pipeline: run the tests and build the Windows app zip.
+# Same steps as .github/workflows/build-windows.yml.
+#
+# Pull request validation: in Azure Repos the `pr:` trigger below is ignored;
+# add a build validation branch policy on main that runs this pipeline instead.
+
+trigger:
+  branches:
+    include: [main]
+  tags:
+    include: ["v*"]
+
+pr:
+  branches:
+    include: [main]
+
+pool:
+  vmImage: windows-latest
+
+variables:
+  QT_QPA_PLATFORM: offscreen
+
+steps:
+  - task: UsePythonVersion@0
+    displayName: Use Python 3.12
+    inputs:
+      versionSpec: "3.12"
+
+  - script: |
+      python -m pip install --upgrade pip
+      python -m pip install .[dev]
+    displayName: Install
+
+  - script: python -m pytest -q --junitxml=test-results.xml
+    displayName: Test
+
+  - task: PublishTestResults@2
+    displayName: Publish test results
+    condition: succeededOrFailed()
+    inputs:
+      testResultsFormat: JUnit
+      testResultsFiles: test-results.xml
+      testRunTitle: CanAnalyser tests
+
+  - task: PowerShell@2
+    displayName: Build Windows app
+    inputs:
+      filePath: packaging/build_windows.ps1
+
+  # Download it from the run's summary page ("1 published" under Artifacts).
+  - task: PublishPipelineArtifact@1
+    displayName: Publish CanAnalyser-windows.zip
+    inputs:
+      targetPath: dist/CanAnalyser-windows.zip
+      artifact: CanAnalyser-windows

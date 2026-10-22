@@ -157,6 +157,26 @@ There are two ways to get the zip:
 
   This creates `dist\CanAnalyser-windows.zip`.
 
+## Azure DevOps
+
+`azure-pipelines.yml` does the same as the GitHub workflow: it runs the tests
+on a Windows agent, publishes the test results, builds the app, and publishes
+`CanAnalyser-windows.zip` as a pipeline artifact. It runs on every push to
+`main` and on `v*` tags.
+
+After importing the repo into Azure Repos:
+
+1. **Pipelines → New pipeline → Azure Repos Git →** pick the repo **→ Existing
+   Azure Pipelines YAML file →** `/azure-pipelines.yml`, then **Run**.
+2. Optional, to build pull requests: **Repos → Branches → main → Branch
+   policies → Build validation**, and add this pipeline. Azure Repos ignores
+   the `pr:` section in the YAML.
+3. Download the zip from a run's summary page, under **Artifacts**. To give
+   colleagues a fixed location, add a step that copies it to a file share or
+   publishes it to an Azure Artifacts feed.
+
+The `.github` folder can be deleted once the repo lives in Azure DevOps.
+
 ## Tests
 
 ```
