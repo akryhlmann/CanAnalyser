@@ -52,6 +52,11 @@ cananalyser --eds drive.eds:5                 # CANopen, EDS for node 5
 Pick protocol, interface (Kvaser channels are listed by device name and serial
 number), and bitrate, then **Connect**.
 
+**Load DBC / EDS…** accepts both file types: a `.dbc` is used for J1939, and
+an `.eds`/`.dcf` for CANopen (you're asked for the node ID; a node already
+seen on the bus is pre-filled). While disconnected, the protocol selector
+switches to match the file.
+
 The interface connects in **normal mode**. It ACKs frames but transmits
 nothing on its own; it only sends when you press an NMT button. This is needed
 on a bench where the device under test is the only other node.
@@ -141,7 +146,7 @@ The app can be packaged as a folder containing `CanAnalyser.exe`, zipped as
 `CanAnalyser-windows.zip`. Colleagues unzip it and double-click the `.exe`.
 Each PC still needs **Kvaser Drivers for Windows** installed. The Kvaser DLL
 is not bundled. The bundled `databases` folder sits next to the `.exe`, and
-the Load DBC/EDS dialogs open there.
+the **Load DBC / EDS…** dialog opens there.
 
 There are two ways to get the zip:
 
