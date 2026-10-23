@@ -316,6 +316,9 @@ class NodeModel(_Table):
         self.now = 0.0
         self.endResetModel()
 
+    def addresses(self) -> list[int]:
+        return list(self._keys)
+
     def timed_out(self, node: NodeInfo) -> bool:
         return bool(node.heartbeat_interval) and self.now - node.last_seen > self.TIMEOUT_FACTOR * node.heartbeat_interval
 

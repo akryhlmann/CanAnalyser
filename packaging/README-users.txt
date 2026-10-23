@@ -8,8 +8,9 @@ CanAnalyser - J1939 / CANopen monitor
    and bitrate, then Connect.
 
 Database files (DBC for J1939, EDS for CANopen) are in the "databases" folder.
-Load them with "Load DBC..." / "Load EDS..." in the toolbar. You can add your own
-files to that folder.
+Load them with "Load DBC / EDS..." in the toolbar: a .dbc file is used for
+J1939, an .eds/.dcf file for CANopen (you are asked for the node ID). You can add
+your own files to that folder.
 
 Choose "Simulator (JS1-H joystick)" as the interface to try the Joystick and
 Trend tabs without hardware (for CANopen, press NMT Start).

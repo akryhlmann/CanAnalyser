@@ -26,7 +26,7 @@ cananalyser --dbc databases/danfoss_js1h/js1h_j1939.dbc
 cananalyser --eds databases/danfoss_js1h/js1h_can.eds:16      # node ID 16 (0x10)
 ```
 
-Or use **Load DBC… / Load EDS…** in the toolbar. For an EDS, enter the
+Or use **Load DBC / EDS…** in the toolbar. For an EDS, enter the
 joystick's node ID when asked.
 
 ## J1939 contents

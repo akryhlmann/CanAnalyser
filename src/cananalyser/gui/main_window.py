@@ -54,6 +54,16 @@ CANOPEN = "CANopen"
 SIM_CHANNEL = "cananalyser-sim"
 
 
+def database_kind(path: str | Path) -> str | None:
+    """Protocol a database file belongs to, from its extension."""
+    suffix = Path(path).suffix.lower()
+    if suffix == ".dbc":
+        return J1939
+    if suffix in (".eds", ".dcf"):
+        return CANOPEN
+    return None
+
+
 def database_dir() -> str:
     """Folder with the bundled DBC/EDS files: next to the .exe, or in the repo."""
     if getattr(sys, "frozen", False):
@@ -133,6 +143,7 @@ class MainWindow(QMainWindow):
         self.profile = JS1HProfile()
         self.trend_store = TrendStore()
         self._bus_time = 0.0
+        self._notice: tuple[str, float] | None = None  # (text, monotonic expiry)
         self._bus_time_mono = time.monotonic()  # monotonic clock when _bus_time was taken
         self.redundancy = RedundancyChecker()
         self.j1939.inverted = self.redundancy.inverted_sources
@@ -192,7 +203,8 @@ class MainWindow(QMainWindow):
         self.record_act = bar.addAction("Record…", self._toggle_recording)
         self.record_act.setCheckable(True)
         bar.addSeparator()
-        self.load_act = bar.addAction("Load DBC…", self._load_database)
+        self.load_act = bar.addAction("Load DBC / EDS…", self._load_database)
+        self.load_act.setToolTip("Load a J1939 DBC or a CANopen EDS/DCF file")
         bar.addAction("Clear", self._clear)
 
     def _build_tabs(self) -> None:
@@ -344,29 +356,64 @@ class MainWindow(QMainWindow):
             QMessageBox.critical(self, "Recording failed", str(exc))
 
     def _load_database(self) -> None:
-        if self.protocol.currentText() == J1939:
-            path, _ = QFileDialog.getOpenFileName(self, "Load J1939 DBC", database_dir(), "DBC files (*.dbc)")
-            if not path:
-                return
-            try:
-                self.j1939.load_dbc(path)
-            except Exception as exc:  # noqa: BLE001
-                QMessageBox.critical(self, "DBC error", str(exc))
-                return
-        else:
-            path, _ = QFileDialog.getOpenFileName(self, "Load EDS/DCF", database_dir(), "Device description (*.eds *.dcf)")
-            if not path:
-                return
-            node_id, ok = QInputDialog.getInt(self, "Node ID", f"Node ID for {Path(path).name}:", 1, 1, 127)
+        # Offer the current protocol's file type first, but always accept both.
+        dbc, eds = "J1939 DBC (*.dbc)", "CANopen EDS/DCF (*.eds *.dcf)"
+        first, second = (eds, dbc) if self.protocol.currentText() == CANOPEN else (dbc, eds)
+        path, _ = QFileDialog.getOpenFileName(
+            self, "Load J1939 DBC or CANopen EDS", database_dir(),
+            f"CAN databases (*.dbc *.eds *.dcf);;{first};;{second}",
+        )
+        if not path:
+            return
+        node_id = None
+        if database_kind(path) == CANOPEN:
+            node_id, ok = QInputDialog.getInt(
+                self, "Node ID", f"CANopen node ID for {Path(path).name}:", self._default_node_id(), 1, 127
+            )
             if not ok:
                 return
-            try:
-                self.canopen.load_eds(path, node_id)
-            except Exception as exc:  # noqa: BLE001
-                QMessageBox.critical(self, "EDS error", str(exc))
-                return
-        self._loaded_files.append(Path(path).name)
-        self.statusBar().showMessage(f"Loaded {Path(path).name}", 5000)
+        try:
+            self.load_database_file(path, node_id)
+        except Exception as exc:  # noqa: BLE001 - parser errors from cantools/canopen
+            QMessageBox.critical(self, "Database error", f"Could not load {Path(path).name}:\n{exc}")
+
+    def load_database_file(self, path: str | Path, node_id: int | None = None) -> None:
+        """Load a DBC (J1939) or EDS/DCF (CANopen, needs ``node_id``) by its extension.
+
+        While disconnected the protocol selector follows the file, so the
+        decoder that uses it is the active one.
+        """
+        path = Path(path)
+        kind = database_kind(path)
+        if kind is None:
+            raise ValueError("Unknown file type; expected .dbc, .eds or .dcf")
+        if kind == J1939:
+            self.j1939.load_dbc(path)
+            label = path.name
+        else:
+            self.canopen.load_eds(path, node_id)
+            label = f"{path.name} (node {node_id})"
+        self._loaded_files.append(label)
+        message = f"Loaded {label}"
+        if self.protocol.currentText() != kind:
+            if self.monitor.running:
+                message += f" — used when the protocol is {kind}"
+            else:
+                self.protocol.setCurrentText(kind)
+                message += f" — protocol switched to {kind}"
+        self._notify(message)
+
+    def _notify(self, text: str, seconds: float = 8.0) -> None:
+        """Show a short notice in the status bar; the periodic refresh keeps it visible."""
+        self._notice = (text, time.monotonic() + seconds)
+
+    def _default_node_id(self) -> int:
+        """First CANopen node seen on the bus, else 1."""
+        if self.protocol.currentText() == CANOPEN:
+            for address in self.nodes.addresses():
+                if 1 <= address <= 127:
+                    return address
+        return 1
 
     def _send_nmt(self, command: int) -> None:
         try:
@@ -421,7 +468,6 @@ class MainWindow(QMainWindow):
             widget.setEnabled(not running)
         self.connect_btn.setText("Disconnect" if running else "Connect")
         self.record_act.setEnabled(running)
-        self.load_act.setText("Load EDS…" if canopen else "Load DBC…")
         self.nmt_box.setVisible(canopen)
         self.nmt_box.setEnabled(running and self.monitor.can_transmit and not self.listen_only.isChecked())
 
@@ -488,7 +534,10 @@ class MainWindow(QMainWindow):
         if self._hw_stats is not None:
             load = self._hw_stats.bus_load / 100.0
             error_frames = max(error_frames, self._hw_stats.err_frame)
-        parts = [
+        parts = []
+        if self._notice and now < self._notice[1]:
+            parts.append(self._notice[0])
+        parts += [
             "Connected" if self.monitor.running else "Disconnected",
             f"frames {self.total_frames}",
             f"bus load {load:.0f}%",
